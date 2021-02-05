@@ -10,7 +10,7 @@ import com.logic.engine.LogicFunctions;
 import com.logic.ui.IconLoader;
 
 /**
- * A digital logic simulator meant as an alternative to applications like Logicly and Boolr. 
+ * A digital logic simulator meant as an alternative to applications like Logicly and Boolr.
  * @author GoopyLotus5844
  */
 public class LogicSimApp {
@@ -60,12 +60,7 @@ public class LogicSimApp {
 	 * @param args The arguments to the main method, which have no effect whatsoever on anything
 	 */
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				new LogicSimApp();
-			}
-		});
+		SwingUtilities.invokeLater(LogicSimApp::new);
 		/**
 		 * To do list:
 		 * Make circuit editor add to selection instead of clearing selection if shift key is down *
