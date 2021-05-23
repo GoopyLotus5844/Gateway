@@ -132,6 +132,7 @@ public class LToolBar extends JToolBar implements ActionListener {
 	 * @return The icon
 	 */
 	private ImageIcon getToolbarIcon(int index) {
+		if(index <= 5) return LogicSimApp.iconLoader.toolBarIcons[index];
 		ImageIcon original = LogicSimApp.iconLoader.toolBarIcons[index];
 		return IconLoader.getScaledImage(original, original.getIconWidth() * 2, original.getIconHeight() * 2);
 	}

@@ -79,6 +79,12 @@ public class IconLoader {
 		for(int i = 0; i < toolBarImages.length; i++) {
 			toolBarIcons[i] = new ImageIcon(toolBarImages[i]);
 		}
+		toolBarIcons[0] = new ImageIcon(loadImage("/new_file.png"));
+		toolBarIcons[1] = new ImageIcon(loadImage("/open_file.png"));
+		toolBarIcons[2] = new ImageIcon(loadImage("/save_file.png"));
+		toolBarIcons[3] = new ImageIcon(loadImage("/select.png"));
+		toolBarIcons[4] = new ImageIcon(loadImage("/pan.png"));
+		toolBarIcons[5] = new ImageIcon(loadImage("/insert.png"));
 	}
 	
 	/**
