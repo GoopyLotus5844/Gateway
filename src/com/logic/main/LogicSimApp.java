@@ -14,7 +14,12 @@ import com.logic.ui.IconLoader;
  * @author GoopyLotus5844
  */
 public class LogicSimApp {
-	
+
+	/**
+	 * OS type, used to determine if the look and feel should be switched from default java to windows
+	 */
+	public static String OS = System.getProperty("os.name").toLowerCase();
+
 	/**
 	 * The IconLoader for the program, which is responsible for loading and holding all of the images that the program uses
 	 */
@@ -60,10 +65,12 @@ public class LogicSimApp {
 	 * @param args The arguments to the main method, which have no effect whatsoever on anything
 	 */
 	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
-			e.printStackTrace();
+		if(OS.contains("win")) {
+			try {
+				UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+			} catch (ClassNotFoundException | UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException e) {
+				e.printStackTrace();
+			}
 		}
 		SwingUtilities.invokeLater(LogicSimApp::new);
 		/**
