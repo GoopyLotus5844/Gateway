@@ -4,7 +4,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 import com.logic.engine.LogicFunctions;
 import com.logic.ui.IconLoader;
@@ -60,6 +60,11 @@ public class LogicSimApp {
 	 * @param args The arguments to the main method, which have no effect whatsoever on anything
 	 */
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+		}
 		SwingUtilities.invokeLater(LogicSimApp::new);
 		/**
 		 * To do list:
