@@ -36,6 +36,7 @@
     <orderEntry type="library" name="Maven: com.twelvemonkeys.common:common-lang:3.7.0" level="project" />
     <orderEntry type="library" name="Maven: com.twelvemonkeys.common:common-io:3.7.0" level="project" />
     <orderEntry type="library" name="Maven: com.twelvemonkeys.common:common-image:3.7.0" level="project" />
+    <orderEntry type="library" name="Maven: com.twelvemonkeys.imageio:imageio-batik:3.7.0" level="project" />
     <orderEntry type="library" name="Maven: com.twelvemonkeys.imageio:imageio-tiff:3.7.0" level="project" />
     <orderEntry type="library" name="Maven: com.twelvemonkeys.servlet:servlet:3.7.0" level="project" />
   </component>
