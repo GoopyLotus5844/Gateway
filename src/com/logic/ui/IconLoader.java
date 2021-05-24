@@ -1,10 +1,15 @@
 package com.logic.ui;
 
-import java.awt.Image;
+import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReadParam;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 import javax.swing.ImageIcon;
 
 /**
@@ -73,8 +78,8 @@ public class IconLoader {
 			logicIcons[i] = new ImageIcon(tempLogicImages[i]);
 			logicImages[i] = new LogicImage(tempLogicImages[i]);
 		}
-		logicIcons[0] = new ImageIcon(loadImage("/pizza.svg"));
-		logicImages[0] = new LogicImage(loadImage("/pizza.svg"));
+		logicIcons[1] = new ImageIcon(advancedLoadImage("./res/pizza.svg"));
+		logicImages[1] = new LogicImage(advancedLoadImage("./res/pizza.svg"));
 		
 		BufferedImage[] toolBarImages = new BufferedImage[numToolBarIcons];
 		toolBarImages = readSheetSection(iconSheet, toolBarImages, 0, 57, 2, 8, 13, 13, 15, 0);
@@ -136,5 +141,43 @@ public class IconLoader {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public BufferedImage advancedLoadImage(String file){
+		BufferedImage image = null;
+		try (ImageInputStream input = ImageIO.createImageInputStream(new File(file))) {
+			// Get the reader
+			Iterator<ImageReader> readers = ImageIO.getImageReaders(input);
+
+			if (!readers.hasNext()) {
+				throw new IllegalArgumentException("No reader for: " + file);
+			}
+
+			ImageReader reader = readers.next();
+
+			try {
+				reader.setInput(input);
+
+				ImageReadParam param = reader.getDefaultReadParam();
+
+				// Optionally, control read settings like sub sampling, source region or destination etc.
+				param.setSourceRenderSize(new Dimension(500, 500));
+				// ...
+
+				// Finally read the image, using settings from param
+				image = reader.read(0, param);
+
+				// Optionally, read thumbnails, meta data, etc...
+				int numThumbs = reader.getNumThumbnails(0);
+				// ...
+			}
+			finally {
+				// Dispose reader in finally block to avoid memory leaks
+				reader.dispose();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return image;
 	}
 }

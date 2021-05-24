@@ -23,6 +23,7 @@ import com.logic.components.Wire;
 import com.logic.input.Camera;
 import com.logic.input.CircuitEditor;
 import com.logic.main.Window;
+import com.logic.test.Pizza;
 import com.logic.util.ActionUtils;
 
 /**
@@ -152,6 +153,8 @@ public class CircuitPanel extends JPanel {
 			LComponent lcomp = lcomps.get(i);
 			if(view.intersects(lcomp.getBounds())) lcomp.render(g, this);
 		}
+
+		Pizza.paint(g2d);
 		
 		editor.getHighlight().render(g);
 		editor.getCustomCreator().render(g);
