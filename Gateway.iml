@@ -23,5 +23,18 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/batik-1.14" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/batik-1.14/samples/tests/resources/java/sources" />
+        </SOURCES>
+        <jarDirectory url="file://$MODULE_DIR$/batik-1.14" recursive="false" />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="batik-all-1.14" level="project" />
   </component>
 </module>
