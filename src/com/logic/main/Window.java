@@ -94,6 +94,7 @@ public class Window extends JFrame {
 		slider.setAlignmentX(Component.CENTER_ALIGNMENT);
 		mainPanel.add(slider);
 		cp.setZoomSlider(slider);
+		slider.updatePosition();
 		
 		FileManager fileManager;
 		if(path == null) fileManager = new FileManager(cp);
