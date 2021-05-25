@@ -26,12 +26,12 @@ public class Camera extends MouseInputAdapter implements MouseWheelListener {
 	/**
 	 * The wheel rotation required to make a change of 1 in the zoom value (higher values represent "slower" zoom)
 	 */
-	private final double zoomSpeed = 50; 
+	private final double zoomSpeed = 10;
 	
 	/**
 	 * The minimum zoom value
 	 */
-	public final double minZoom = 0.2f;
+	public final double minZoom = 0.4f;
 	
 	/**
 	 * The maximum zoom value
