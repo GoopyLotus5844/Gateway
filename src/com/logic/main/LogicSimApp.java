@@ -104,6 +104,7 @@ public class LogicSimApp {
 		 * The location field in the properties can malfunction
 		 * Opening a file while the app is maximized results in a window with a strange layout at the top
 		 * The insert and select options are redundant; there is no reason to ever use them
+		 * Make scroll to zoom less jank
 		 */
 	}
 }

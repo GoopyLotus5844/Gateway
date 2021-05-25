@@ -18,6 +18,7 @@ import com.logic.components.SComponent;
 import com.logic.components.Wire;
 import com.logic.input.Camera;
 import com.logic.input.CircuitEditor;
+import com.logic.main.LogicSimApp;
 import com.logic.main.Window;
 import com.logic.util.ActionUtils;
 
@@ -148,6 +149,8 @@ public class CircuitPanel extends JPanel {
 			LComponent lcomp = lcomps.get(i);
 			if(view.intersects(lcomp.getBounds())) lcomp.render(g, this);
 		}
+
+		g.drawImage(LogicSimApp.iconLoader.logicImages[0].getBufferedImage(0), 0, 0, 80, 80, null);
 		
 		editor.getHighlight().render(g);
 		editor.getCustomCreator().render(g);

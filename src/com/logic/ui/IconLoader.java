@@ -78,6 +78,7 @@ public class IconLoader {
 			logicIcons[i] = new ImageIcon(tempLogicImages[i]);
 			logicImages[i] = new LogicImage(tempLogicImages[i]);
 		}
+		logicImages[0] = new LogicImage(advancedLoadImage("res/and.svg"));
 		
 		BufferedImage[] toolBarImages = new BufferedImage[numToolBarIcons];
 		toolBarImages = readSheetSection(iconSheet, toolBarImages, 0, 57, 2, 8, 13, 13, 15, 0);
@@ -158,7 +159,7 @@ public class IconLoader {
 				ImageReadParam param = reader.getDefaultReadParam();
 
 				// Optionally, control read settings like sub sampling, source region or destination etc.
-				param.setSourceRenderSize(new Dimension(500, 500));
+				param.setSourceRenderSize(new Dimension(200, 200));
 				// ...
 
 				// Finally read the image, using settings from param

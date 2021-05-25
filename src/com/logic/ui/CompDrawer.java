@@ -84,9 +84,14 @@ public class CompDrawer implements Serializable {
 				(int) IMAGE_SCALE * currentImage.getWidth(), (int) IMAGE_SCALE * currentImage.getHeight(), null);
 		 */
 
+		g.drawImage(LogicSimApp.iconLoader.logicImages[0].getBufferedImage(0), lcomp.getX(), lcomp.getY(), 80, 80, null);
+
+		/*
 		AndOptimized and = new AndOptimized();
 		and.setDimension(new Dimension(100, 100));
 		and.paintIcon(null, g, lcomp.getX(), lcomp.getY());
+		*/
+
 		g.setColor(Selection.SELECT_COLOR);
 		if(lcomp.isSelected()) ((Graphics2D) g).draw(lcomp.getBounds());
 	}
