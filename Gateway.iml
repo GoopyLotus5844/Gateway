@@ -39,5 +39,7 @@
     <orderEntry type="library" name="Maven: com.twelvemonkeys.imageio:imageio-batik:3.7.0" level="project" />
     <orderEntry type="library" name="Maven: com.twelvemonkeys.imageio:imageio-tiff:3.7.0" level="project" />
     <orderEntry type="library" name="Maven: com.twelvemonkeys.servlet:servlet:3.7.0" level="project" />
+    <orderEntry type="library" name="Maven: com.github.insubstantial:flamingo:7.0" level="project" />
+    <orderEntry type="library" name="Maven: com.github.insubstantial:trident:swing:7.0" level="project" />
   </component>
 </module>

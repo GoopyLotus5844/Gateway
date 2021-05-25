@@ -1,10 +1,6 @@
 package com.logic.ui;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -154,7 +150,11 @@ public class CircuitPanel extends JPanel {
 			if(view.intersects(lcomp.getBounds())) lcomp.render(g, this);
 		}
 
-		Pizza.paint(g2d);
+		new Pizza().paintIcon(this, g, 0, 0);
+		new Pizza().paintIcon(this, g, 100, 100);
+		Pizza lorge = new Pizza();
+		lorge.setDimension(new Dimension(100, 100));
+		lorge.paintIcon(this, g, 200, 200);
 		
 		editor.getHighlight().render(g);
 		editor.getCustomCreator().render(g);

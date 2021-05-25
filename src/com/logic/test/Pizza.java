@@ -10,7 +10,7 @@ import static java.awt.MultipleGradientPaint.ColorSpaceType.*;
  * This class has been automatically generated using
  * <a href="http://ebourg.github.io/flamingo-svg-transcoder/">Flamingo SVG transcoder</a>.
  */
-public class Pizza {
+public class Pizza implements org.pushingpixels.flamingo.api.common.icon.ResizableIcon {
 
     /**
      * Paints the transcoded SVG image on the specified graphics context. You
@@ -96,6 +96,59 @@ public class Pizza {
      */
     public static int getOrigHeight() {
         return 20;
+    }
+
+    /**
+     * The current width of this resizable icon.
+     */
+    int width;
+
+    /**
+     * The current height of this resizable icon.
+     */
+    int height;
+
+    /**
+     * Creates a new transcoded SVG image.
+     */
+    public Pizza() {
+        this.width = getOrigWidth();
+        this.height = getOrigHeight();
+    }
+
+    @Override
+    public int getIconHeight() {
+        return height;
+    }
+
+    @Override
+    public int getIconWidth() {
+        return width;
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.pushingpixels.flamingo.api.common.icon.ResizableIcon#setDimension(java.awt.Dimension)
+     */
+    @Override
+    public void setDimension(Dimension dimension) {
+        this.width = dimension.width;
+        this.height = dimension.height;
+    }
+
+    @Override
+    public void paintIcon(Component c, Graphics g, int x, int y) {
+        Graphics2D g2d = (Graphics2D) g.create();
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.translate(x, y);
+
+        double coef1 = (double) this.width / (double) getOrigWidth();
+        double coef2 = (double) this.height / (double) getOrigHeight();
+        double coef = Math.min(coef1, coef2);
+        g2d.scale(coef, coef);
+        paint(g2d);
+        g2d.dispose();
     }
 }
 
