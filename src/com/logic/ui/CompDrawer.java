@@ -1,13 +1,14 @@
 package com.logic.ui;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
 import com.logic.components.LComponent;
 import com.logic.input.Selection;
 import com.logic.main.LogicSimApp;
+import com.logic.test.And;
+import com.logic.test.AndOptimized;
 
 /**
  * A class possessed by every LComponent that provides the code for drawing the component
@@ -57,7 +58,7 @@ public class CompDrawer implements Serializable {
 	
 	/**
 	 * Sets the active image
-	 * @param activeImage The new active image index
+	 * @param activeImageIndex The new active image index
 	 */
 	public void setActiveImageIndex(int activeImageIndex) {
 		this.activeImageIndex = activeImageIndex;
@@ -78,8 +79,14 @@ public class CompDrawer implements Serializable {
 	 */
 	public void draw(Graphics g) {
 		BufferedImage currentImage = getActiveImage().getBufferedImage(lcomp.getRotator().getRotation());
+		/*
 		g.drawImage(currentImage, lcomp.getX(), lcomp.getY(), 
 				(int) IMAGE_SCALE * currentImage.getWidth(), (int) IMAGE_SCALE * currentImage.getHeight(), null);
+		 */
+
+		AndOptimized and = new AndOptimized();
+		and.setDimension(new Dimension(100, 100));
+		and.paintIcon(null, g, lcomp.getX(), lcomp.getY());
 		g.setColor(Selection.SELECT_COLOR);
 		if(lcomp.isSelected()) ((Graphics2D) g).draw(lcomp.getBounds());
 	}

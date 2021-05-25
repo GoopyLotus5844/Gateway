@@ -1,4 +1,4 @@
-
+package com.logic.test;
 
 import java.awt.*;
 import java.awt.geom.*;
@@ -10,7 +10,7 @@ import static java.awt.MultipleGradientPaint.ColorSpaceType.*;
  * This class has been automatically generated using
  * <a href="http://ebourg.github.io/flamingo-svg-transcoder/">Flamingo SVG transcoder</a>.
  */
-public class Pizza implements org.pushingpixels.flamingo.api.common.icon.ResizableIcon {
+public class And implements org.pushingpixels.flamingo.api.common.icon.ResizableIcon {
 
     /**
      * Paints the transcoded SVG image on the specified graphics context. You
@@ -35,30 +35,62 @@ public class Pizza implements org.pushingpixels.flamingo.api.common.icon.Resizab
         
 
         // 
+        transformations.push(g.getTransform());
+        g.transform(new AffineTransform(0.013888889f, 0, 0, 0.013888889f, 0, 0));
 
         // _0
 
         // _0_0
         shape = new GeneralPath();
-        ((GeneralPath) shape).moveTo(12.0, 15.0);
-        ((GeneralPath) shape).curveTo(10.895431, 15.0, 10.0, 14.104569, 10.0, 13.0);
-        ((GeneralPath) shape).curveTo(10.0, 11.89, 10.9, 11.0, 12.0, 11.0);
-        ((GeneralPath) shape).curveTo(13.104569, 11.0, 14.0, 11.895431, 14.0, 13.0);
-        ((GeneralPath) shape).curveTo(14.0, 14.104569, 13.104569, 15.0, 12.0, 15.0);
-        ((GeneralPath) shape).moveTo(7.0, 7.0);
-        ((GeneralPath) shape).curveTo(7.0, 5.89, 7.89, 5.0, 9.0, 5.0);
-        ((GeneralPath) shape).curveTo(10.104569, 5.0, 11.0, 5.8954306, 11.0, 7.0);
-        ((GeneralPath) shape).curveTo(11.0, 8.104569, 10.104569, 9.0, 9.0, 9.0);
-        ((GeneralPath) shape).curveTo(7.89, 9.0, 7.0, 8.1, 7.0, 7.0);
-        ((GeneralPath) shape).moveTo(12.0, 2.0);
-        ((GeneralPath) shape).curveTo(8.43, 2.0, 5.23, 3.54, 3.0, 6.0);
-        ((GeneralPath) shape).lineTo(12.0, 22.0);
-        ((GeneralPath) shape).lineTo(21.0, 6.0);
-        ((GeneralPath) shape).curveTo(18.78, 3.54, 15.57, 2.0, 12.0, 2.0);
-        ((GeneralPath) shape).closePath();
+        ((GeneralPath) shape).moveTo(58.17, 36.0);
+        ((GeneralPath) shape).curveTo(58.17, 24.5, 48.5, 15.83, 36.0, 15.83);
+        ((GeneralPath) shape).curveTo(23.5, 15.83, 18.0, 15.83, 18.0, 15.83);
+        ((GeneralPath) shape).lineTo(18.0, 36.0);
 
-        g.setPaint(BLACK);
+        g.setPaint(WHITE);
         g.fill(shape);
+        g.setPaint(BLACK);
+        g.setStroke(new BasicStroke(3, 0, 0, 10));
+        g.draw(shape);
+
+        // _0_1
+        shape = new GeneralPath();
+        ((GeneralPath) shape).moveTo(58.17, 35.83);
+        ((GeneralPath) shape).curveTo(58.17, 47.33, 48.5, 56.0, 36.0, 56.0);
+        ((GeneralPath) shape).curveTo(23.5, 56.0, 18.0, 56.0, 18.0, 56.0);
+        ((GeneralPath) shape).lineTo(18.0, 35.83);
+
+        g.setPaint(WHITE);
+        g.fill(shape);
+        g.setPaint(BLACK);
+        g.draw(shape);
+
+        // _0_2
+shape = new Line2D.Float(18.000000f, 23.719999f, 6.500000f, 23.719999f);
+        g.draw(shape);
+
+        // _0_3
+shape = new Line2D.Float(18.000000f, 48.720001f, 6.500000f, 48.720001f);
+        g.draw(shape);
+
+        // _0_4
+shape = new Line2D.Float(58.169998f, 36.000000f, 65.940002f, 36.000000f);
+        g.draw(shape);
+
+        // _0_5
+        shape = new Ellipse2D.Double(2.5, 19.719999313354492, 8, 8);
+        g.setPaint(new Color(0x5B6EE1));
+        g.fill(shape);
+
+        // _0_6
+        shape = new Ellipse2D.Double(2.5, 44.720001220703125, 8, 8);
+        g.fill(shape);
+
+        // _0_7
+        shape = new Ellipse2D.Double(63.5, 32, 8, 8);
+        g.fill(shape);
+
+        g.setTransform(transformations.pop()); // _0
 
     }
 
@@ -68,7 +100,7 @@ public class Pizza implements org.pushingpixels.flamingo.api.common.icon.Resizab
      * @return The X of the bounding box of the original SVG image.
      */
     public static int getOrigX() {
-        return 3;
+        return 1;
     }
 
     /**
@@ -77,7 +109,7 @@ public class Pizza implements org.pushingpixels.flamingo.api.common.icon.Resizab
      * @return The Y of the bounding box of the original SVG image.
      */
     public static int getOrigY() {
-        return 2;
+        return 1;
     }
 
     /**
@@ -86,7 +118,7 @@ public class Pizza implements org.pushingpixels.flamingo.api.common.icon.Resizab
      * @return The width of the bounding box of the original SVG image.
      */
     public static int getOrigWidth() {
-        return 18;
+        return 1;
     }
 
     /**
@@ -95,7 +127,7 @@ public class Pizza implements org.pushingpixels.flamingo.api.common.icon.Resizab
      * @return The height of the bounding box of the original SVG image.
      */
     public static int getOrigHeight() {
-        return 20;
+        return 1;
     }
 
     /**
@@ -111,7 +143,7 @@ public class Pizza implements org.pushingpixels.flamingo.api.common.icon.Resizab
     /**
      * Creates a new transcoded SVG image.
      */
-    public Pizza() {
+    public And() {
         this.width = getOrigWidth();
         this.height = getOrigHeight();
     }

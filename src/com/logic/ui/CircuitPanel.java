@@ -19,7 +19,6 @@ import com.logic.components.Wire;
 import com.logic.input.Camera;
 import com.logic.input.CircuitEditor;
 import com.logic.main.Window;
-import com.logic.test.Pizza;
 import com.logic.util.ActionUtils;
 
 /**
@@ -149,12 +148,6 @@ public class CircuitPanel extends JPanel {
 			LComponent lcomp = lcomps.get(i);
 			if(view.intersects(lcomp.getBounds())) lcomp.render(g, this);
 		}
-
-		new Pizza().paintIcon(this, g, 0, 0);
-		new Pizza().paintIcon(this, g, 100, 100);
-		Pizza lorge = new Pizza();
-		lorge.setDimension(new Dimension(100, 100));
-		lorge.paintIcon(this, g, 200, 200);
 		
 		editor.getHighlight().render(g);
 		editor.getCustomCreator().render(g);
