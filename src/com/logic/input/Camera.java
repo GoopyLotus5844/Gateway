@@ -95,8 +95,9 @@ public class Camera extends MouseInputAdapter implements MouseWheelListener {
 		zoom -= (rotation / zoomSpeed);
 		if(zoom < minZoom) zoom = minZoom;
 		else if(zoom > maxZoom) zoom = maxZoom;
-		x += e.getX() / zoom - e.getX() / oldZoom;
-		y += e.getY() / zoom - e.getY() / oldZoom;
+		double offsetCoefficient = (oldZoom - zoom) / (oldZoom * zoom);
+		x += e.getX() * offsetCoefficient;
+		y += e.getY() * offsetCoefficient;
 		slider.updatePosition();
 		cp.repaint();
 	}
@@ -145,9 +146,7 @@ public class Camera extends MouseInputAdapter implements MouseWheelListener {
 	 * Zooms in by a small amount
 	 */
 	public void zoomIn() {
-		zoom += increment;
-		if(zoom > maxZoom) zoom = maxZoom;
-		cp.repaint();
+		setZoom(zoom + increment);
 		slider.updatePosition();
 	}
 	
@@ -155,9 +154,7 @@ public class Camera extends MouseInputAdapter implements MouseWheelListener {
 	 * Zooms out by a small amount
 	 */
 	public void zoomOut() {
-		zoom -= increment;
-		if(zoom < minZoom) zoom = minZoom;
-		cp.repaint();
+		setZoom(zoom - increment);
 		slider.updatePosition();
 	}
 
@@ -174,6 +171,11 @@ public class Camera extends MouseInputAdapter implements MouseWheelListener {
 	 * @param zoom The new zoom value
 	 */
 	public void setZoom(double zoom) {
+		if(zoom < minZoom) zoom = minZoom;
+		else if(zoom > maxZoom) zoom = maxZoom;
+		double offsetCoefficient = (this.zoom - zoom) / (this.zoom * zoom);
+		x += (double) cp.getWidth() / 2 * offsetCoefficient;
+		y += (double) cp.getHeight() / 2 * offsetCoefficient;
 		this.zoom = zoom;
 		cp.repaint();
 	}
