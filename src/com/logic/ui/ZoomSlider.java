@@ -33,6 +33,11 @@ public class ZoomSlider extends JPanel implements ChangeListener {
 	 * The CircuitPanel
 	 */
 	private CircuitPanel cp;
+
+	/**
+	 * Shows if the slider was most recently updated internally by the program rather than being dragged by the user
+	 */
+	private boolean internalUpdate = false;
 	
 	/**
 	 * Constructs a new ZoomSlider
@@ -52,6 +57,7 @@ public class ZoomSlider extends JPanel implements ChangeListener {
 	 * Updates the displayed position of the slider based on the actual zoom of the CircuitPanel
 	 */
 	public void updatePosition() {
+		internalUpdate = true;
 		Camera cam = cp.getCamera(); 
 		double zoom = cam.getZoom() - cam.minZoom;
 		double range = cam.maxZoom - cam.minZoom;
@@ -63,11 +69,15 @@ public class ZoomSlider extends JPanel implements ChangeListener {
 	 */
 	@Override
 	public void stateChanged(ChangeEvent e) {
+		if(internalUpdate){
+			internalUpdate = false;
+			return;
+		}
 		Camera cam = cp.getCamera();
 		JSlider source = (JSlider) e.getSource();
 		int value = source.getValue();
 		double range = cam.maxZoom - cam.minZoom;
-		cam.setZoom((range / 100) * value + cam.minZoom); 
+		cam.setZoom((range / 100) * value + cam.minZoom);
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.logic.input;
 
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
@@ -90,9 +91,12 @@ public class Camera extends MouseInputAdapter implements MouseWheelListener {
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		double rotation = e.getPreciseWheelRotation();
+		double oldZoom = zoom;
 		zoom -= (rotation / zoomSpeed);
 		if(zoom < minZoom) zoom = minZoom;
 		else if(zoom > maxZoom) zoom = maxZoom;
+		x += e.getX() / zoom - e.getX() / oldZoom;
+		y += e.getY() / zoom - e.getY() / oldZoom;
 		slider.updatePosition();
 		cp.repaint();
 	}
@@ -173,7 +177,7 @@ public class Camera extends MouseInputAdapter implements MouseWheelListener {
 		this.zoom = zoom;
 		cp.repaint();
 	}
-	
+
 	/**
 	 * Sets the ZoomSlider instance used by the Camera
 	 * @param slider the ZoomSlider

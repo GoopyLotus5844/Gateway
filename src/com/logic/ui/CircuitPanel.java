@@ -128,9 +128,8 @@ public class CircuitPanel extends JPanel {
 		double zoom = cam.getZoom();
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, getWidth(), getHeight());
-		Point translate = calcGraphicsTranslation();
 		g2d.scale(zoom, zoom);
-		g2d.translate(translate.x, translate.y);
+		g2d.translate(cam.getX(), cam.getY());
 		g.setColor(Color.GRAY);
 		if(showGrid) {
 			for(int i = -GRID_RENDER_X; i < GRID_RENDER_X; i += GRID_SPACING) g.drawLine(i, -GRID_RENDER_Y, i, GRID_RENDER_Y);
@@ -154,7 +153,7 @@ public class CircuitPanel extends JPanel {
 		
 		editor.getHighlight().render(g);
 		editor.getCustomCreator().render(g);
-		g2d.translate(-translate.x, -translate.y);
+		g2d.translate(cam.getX(), cam.getY());
 		g2d.scale((1 / zoom), (1 / zoom));
 		if(message != null) message.render(g);
 	}
@@ -247,24 +246,9 @@ public class CircuitPanel extends JPanel {
 	 * @return The transformed point
 	 */
 	public Point withTransform(Point p) {
-		Point translate = calcGraphicsTranslation();
-		return new Point((int) (p.getX() / cam.getZoom() - translate.x), (int) (p.getY() / cam.getZoom() - translate.y));
+		return new Point((int) (p.getX() / cam.getZoom() - cam.getX()), (int) (p.getY() / cam.getZoom() - cam.getY()));
 	}
-	
-	/**
-	 * Returns the amount by which the Graphics object in the paintComponent method should be translated based on the position and zoom
-	 * of the camera
-	 * @return The graphics translation
-	 */
-	private Point calcGraphicsTranslation() {
-		double zoom = cam.getZoom();
-		int width = getWidth();
-		int height = getHeight();
-		int translateX = (int) ((width - width * zoom) / (2 * zoom) + cam.getX());
-		int translateY = (int) ((height - height * zoom) / (2 * zoom) + cam.getY());
-		return new Point(translateX, translateY);
-	}
-	
+
 	/**
 	 * Returns the window that holds this CircuitPanel
 	 * @return The Window
