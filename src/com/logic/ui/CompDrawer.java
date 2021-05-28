@@ -79,10 +79,14 @@ public class CompDrawer implements Serializable {
 	 */
 	public void draw(Graphics g) {
 		BufferedImage currentImage = getActiveImage().getBufferedImage(lcomp.getRotator().getRotation());
-		/*
-		g.drawImage(currentImage, lcomp.getX(), lcomp.getY(), 
-				(int) IMAGE_SCALE * currentImage.getWidth(), (int) IMAGE_SCALE * currentImage.getHeight(), null);
-		 */
+
+		//g.drawImage(currentImage, lcomp.getX(), lcomp.getY(),
+		//		(int) IMAGE_SCALE * currentImage.getWidth(), (int) IMAGE_SCALE * currentImage.getHeight(), null);
+
+		Graphics2D g2d = (Graphics2D) g;
+		g2d.setStroke(new BasicStroke(5));
+		g2d.setColor(Color.BLACK);
+		g2d.drawLine(lcomp.getX() + 12, lcomp.getY() - 50, lcomp.getX() + 12, lcomp.getY() + 130);
 
 		g.drawImage(LogicSimApp.iconLoader.logicImages[0].getBufferedImage(0), lcomp.getX(), lcomp.getY(), 80, 80, null);
 
@@ -93,6 +97,7 @@ public class CompDrawer implements Serializable {
 		*/
 
 		g.setColor(Selection.SELECT_COLOR);
+		g2d.setStroke(new BasicStroke(1));
 		if(lcomp.isSelected()) ((Graphics2D) g).draw(lcomp.getBounds());
 	}
 	
