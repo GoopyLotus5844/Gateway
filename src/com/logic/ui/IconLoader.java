@@ -78,7 +78,6 @@ public class IconLoader {
 			logicIcons[i] = new ImageIcon(tempLogicImages[i]);
 			logicImages[i] = new LogicImage(tempLogicImages[i]);
 		}
-		logicImages[0] = new LogicImage(advancedLoadImage("res/or.svg"));
 		
 		BufferedImage[] toolBarImages = new BufferedImage[numToolBarIcons];
 		toolBarImages = readSheetSection(iconSheet, toolBarImages, 0, 57, 2, 8, 13, 13, 15, 0);
