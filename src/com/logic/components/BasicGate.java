@@ -142,6 +142,10 @@ public class BasicGate extends LComponent {
 		}
 	}
 
+	public void setNumInputs(){
+
+	}
+
 	@Override
 	public LComponent makeCopy() {
 		BasicGate result = new BasicGate(x, y, type);

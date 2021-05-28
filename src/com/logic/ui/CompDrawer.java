@@ -1,14 +1,17 @@
 package com.logic.ui;
 
 import java.awt.*;
+import java.awt.geom.GeneralPath;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
+import com.logic.components.BasicGate;
 import com.logic.components.LComponent;
 import com.logic.input.Selection;
 import com.logic.main.LogicSimApp;
 import com.logic.test.And;
 import com.logic.test.AndOptimized;
+import com.logic.test.Or;
 
 /**
  * A class possessed by every LComponent that provides the code for drawing the component
@@ -78,10 +81,41 @@ public class CompDrawer implements Serializable {
 	 * @param g The Graphics object to use for painting
 	 */
 	public void draw(Graphics g) {
+		/*
 		BufferedImage currentImage = getActiveImage().getBufferedImage(lcomp.getRotator().getRotation());
 		g.drawImage(currentImage, lcomp.getX(), lcomp.getY(),
 				(int) IMAGE_SCALE * currentImage.getWidth(), (int) IMAGE_SCALE * currentImage.getHeight(), null);
 		g.setColor(Selection.SELECT_COLOR);
+		 */
+
+		GeneralPath shape = new GeneralPath();
+		shape.moveTo(lcomp.getX() - 8, lcomp.getY() + 3);
+		shape.curveTo(lcomp.getX() + 5, lcomp.getY() + 30, lcomp.getX() + 5, lcomp.getY() + 50, lcomp.getX() - 8, lcomp.getY() + 77);
+		Graphics2D g2d = (Graphics2D) g;
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2d.setColor(Color.BLACK);
+		g2d.setStroke(new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+		//((Graphics2D) g).draw(shape);
+
+		g2d.drawLine(lcomp.getX() + 12, lcomp.getY() + 20, lcomp.getX() - 30, lcomp.getY() + 20);
+		g2d.drawLine(lcomp.getX() + 12, lcomp.getY() + 60, lcomp.getX() - 30, lcomp.getY() + 60);
+		g2d.drawLine(lcomp.getX() + 80, lcomp.getY() + 40, lcomp.getX() + 120, lcomp.getY() + 40);
+
+		g2d.setStroke(new BasicStroke(2));
+		g2d.setColor(Color.WHITE);
+		//g2d.fillOval(lcomp.getX() + 80, lcomp.getY() + 33, 14, 14);
+		g2d.setColor(Color.BLACK);
+		//g2d.drawOval(lcomp.getX() + 80, lcomp.getY() + 32, 15, 15);
+		g2d.setStroke(new BasicStroke(5));
+		//g2d.drawLine(lcomp.getX() + 12, lcomp.getY() - 50, lcomp.getX() + 12, lcomp.getY() + 130);
+
+		g2d.setColor(Selection.SELECT_COLOR);
+		g2d.fillOval(lcomp.getX() - 37, lcomp.getY() + 11, 18, 18);
+		g2d.fillOval(lcomp.getX() - 37, lcomp.getY() + 51, 18, 18);
+		g2d.fillOval(lcomp.getX() + 111, lcomp.getY() + 31, 18, 18);
+
+		g.drawImage(LogicSimApp.iconLoader.logicImages[0].getBufferedImage(0), lcomp.getX(), lcomp.getY(), 80, 80, null);
+
 		if(lcomp.isSelected()) ((Graphics2D) g).draw(lcomp.getBounds());
 	}
 	
