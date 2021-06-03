@@ -159,7 +159,7 @@ public class IconLoader {
 				ImageReadParam param = reader.getDefaultReadParam();
 
 				// Optionally, control read settings like sub sampling, source region or destination etc.
-				param.setSourceRenderSize(new Dimension(256, 256));
+				param.setSourceRenderSize(new Dimension(240, 240));
 				// ...
 
 				// Finally read the image, using settings from param

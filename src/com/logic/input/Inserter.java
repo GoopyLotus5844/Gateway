@@ -72,7 +72,8 @@ public class Inserter {
 		this.insertPanel = insertPanel;
 		this.revision = revision;
 		offsets = new HashMap<String, Point>();
-		float scale = CompDrawer.IMAGE_SCALE;
+		//float scale = CompDrawer.IMAGE_SCALE;
+		float scale = 0;
 		offsets.put("Buffer", new Point((int) (5.5 * scale), (int) (3.5 * scale)));
 		offsets.put("Not", new Point((int) (5.5 * scale), (int) (3.5 * scale)));
 		offsets.put("And", new Point((int) (5.5 * scale), (int) (3.5 * scale)));
@@ -88,6 +89,7 @@ public class Inserter {
 		offsets.put("One", new Point((int) (4.5 * scale), (int) (4.5 * scale)));
 		offsets.put("Button", new Point((int) (4.5 * scale), (int) (5.5 * scale)));
 		offsets.put("Display", new Point((int) (8.5 * scale), (int) (5.5 * scale)));
+		//TODO fix this offset system (used to place center of components at cursor)
 	}
 	
 	/**

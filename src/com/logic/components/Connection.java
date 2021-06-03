@@ -180,14 +180,13 @@ public class Connection implements Deletable, Serializable {
 	 * @return This connection's position
 	 */
 	public Point getCoord() {
-		float scale = CompDrawer.IMAGE_SCALE;
 		int rotation = lcomp.getRotator().getRotation();
 		Point rotatedPoint = null;
 		if(rotation == CompRotator.RIGHT) rotatedPoint = new Point(x, y);
 		else if(rotation == CompRotator.DOWN) rotatedPoint = new Point(dx, dy);
 		else if(rotation == CompRotator.LEFT) rotatedPoint = new Point(lx, ly);
 		else if(rotation == CompRotator.UP) rotatedPoint = new Point(ux, uy);
-		Point p = new Point((int) (rotatedPoint.x * scale + scale / 2), (int) (rotatedPoint.y * scale + scale / 2));
+		Point p = new Point((int) (rotatedPoint.x), (int) (rotatedPoint.y));
 		p.translate(lcomp.getX(), lcomp.getY());
 		return p;
 	}
@@ -291,12 +290,10 @@ public class Connection implements Deletable, Serializable {
 	public void setXY(int x, int y) {
 		this.x = x;
 		this.y = y;
-		Rectangle rightBounds = lcomp.getBoundsRight();
-		int width = (int) (rightBounds.width / CompDrawer.IMAGE_SCALE);
-		int height = (int) (rightBounds.height / CompDrawer.IMAGE_SCALE);
-		Point down = CompRotator.withRotation(x, y, width, height, CompRotator.DOWN);
-		Point left = CompRotator.withRotation(x, y, width, height, CompRotator.LEFT);
-		Point up = CompRotator.withRotation(x, y, width, height, CompRotator.UP);
+		Rectangle bounds = lcomp.getBoundsRight();
+		Point down = CompRotator.withRotation(x, y, bounds.width, bounds.height, CompRotator.DOWN);
+		Point left = CompRotator.withRotation(x, y, bounds.width, bounds.height, CompRotator.LEFT);
+		Point up = CompRotator.withRotation(x, y, bounds.width, bounds.height, CompRotator.UP);
 		dx = down.x;
 		lx = left.x;
 		ux = up.x;

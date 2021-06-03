@@ -100,14 +100,13 @@ public abstract class IComponent extends LComponent implements MouseListener {
 	
 	/**
 	 * Sets the click action for this IComponent
-	 * @param ax The pixel x position of the top left corner of the bounding box
-	 * @param ay The pixel y position of the top left corner of the bounding box
+	 * @param x The pixel x position of the top left corner of the bounding box
+	 * @param y The pixel y position of the top left corner of the bounding box
 	 * @param width The pixel width of the bounding box
 	 * @param height The pixel height of the bounding box
 	 */
-	protected void setClickAction(int ax, int ay, int width, int height) {
-		clickBounds = new Rectangle((int) (ax * CompDrawer.IMAGE_SCALE), (int) (ay * CompDrawer.IMAGE_SCALE), 
-				(int) (width * CompDrawer.IMAGE_SCALE), (int) (height * CompDrawer.IMAGE_SCALE));
+	protected void setClickAction(int x, int y, int width, int height) {
+		clickBounds = new Rectangle(x, y, width, height);
 		downClickBounds = rotate(clickBounds, CompRotator.DOWN);
 		leftClickBounds = rotate(clickBounds, CompRotator.LEFT);
 		upClickBounds = rotate(clickBounds, CompRotator.UP);

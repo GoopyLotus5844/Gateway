@@ -53,7 +53,8 @@ public class CustomHelper {
 		int firstDimension = findDimension(content.get(CompRotator.UP), content.get(CompRotator.DOWN));
 		FontRenderContext frc = new FontRenderContext(labelFont.getTransform(), true, true);
 		Rectangle2D bounds = labelFont.getStringBounds(label, frc);
-		int secondDimension = (int) (Math.floor(bounds.getWidth() / CompDrawer.IMAGE_SCALE) + 3);
+		int secondDimension = (int) (Math.floor(bounds.getWidth()) + 20);
+		//TODO fix the above line to use appropriate padding
 		if(secondDimension % 2 == 0) secondDimension++;
 		return Math.max(firstDimension, secondDimension);
 	}
@@ -102,8 +103,8 @@ public class CustomHelper {
 	 * @return The outer bounds to render
 	 */
 	public static Rectangle getOuterRenderBounds(int x, int y, int width, int height) {
-		return new Rectangle((int) (x + 2 * CompDrawer.IMAGE_SCALE), (int) (y + 2 * CompDrawer.IMAGE_SCALE), 
-				(int) (CompDrawer.IMAGE_SCALE * width), (int) (CompDrawer.IMAGE_SCALE * height));
+		return new Rectangle(x, y, width, height);
+		//TODO remove this method and the following method
 	}
 	
 	/**
@@ -115,8 +116,7 @@ public class CustomHelper {
 	 * @return The inner bounds to render
 	 */
 	public static Rectangle getInnerRenderBounds(int x, int y, int width, int height) {
-		return new Rectangle((int) (x + 3 * CompDrawer.IMAGE_SCALE), (int) (y + 3 * CompDrawer.IMAGE_SCALE), 
-				(int) (CompDrawer.IMAGE_SCALE * (width - 2)), (int) (CompDrawer.IMAGE_SCALE * (height - 2)));
+		return new Rectangle(x, y, width, height);
 	}
 	
 	/**

@@ -45,6 +45,7 @@ public class GraphicsUtils {
 		int connectY = c.getRotatedY(rotation);
 		int connectDirection = c.getAbsoluteDirection();
 		BufferedImage rotateImage = image.getBufferedImage(c.getAbsoluteDirection());
+		/*
 		float scale = CompDrawer.IMAGE_SCALE;
 		if(connectDirection == CompRotator.LEFT || connectDirection == CompRotator.UP) g.drawImage(rotateImage, 
 				(int) (connectX * scale + xOffset),
@@ -64,6 +65,8 @@ public class GraphicsUtils {
 				(int) (rotateImage.getWidth() * scale), 
 				(int) (rotateImage.getHeight() * scale), 
 				null);
+		 */
+		//TODO implement or remove this method
 	}
 	
 	/**

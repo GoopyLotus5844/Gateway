@@ -68,7 +68,6 @@ public class Custom extends SComponent {
 	private String label;
 	
 	/**
-	 * @param cp The CircuitPanel
 	 * @param x The x position
 	 * @param y The y position
 	 * @param label The label that will be drawn on the component
@@ -159,10 +158,9 @@ public class Custom extends SComponent {
 	@Override
 	public Rectangle getBounds() {
 		int rotation = rotator.getRotation();
-		int boundsWidth = (int) (CompDrawer.IMAGE_SCALE * (width + 4));
-		int boundsHeight = (int) (CompDrawer.IMAGE_SCALE * (height + 4)); 
-		if(rotation == CompRotator.UP || rotation == CompRotator.DOWN) return new Rectangle(x, y, boundsHeight, boundsWidth);
-		else return new Rectangle(x, y, boundsWidth, boundsHeight);
+		if(rotation == CompRotator.UP || rotation == CompRotator.DOWN) return new Rectangle(x, y, height, width);
+		else return new Rectangle(x, y, width, height);
+		//TODO fix this and the following method
 	}
 	
 	/**
@@ -171,9 +169,7 @@ public class Custom extends SComponent {
 	 */
 	@Override
 	public Rectangle getBoundsRight() {
-		int boundsWidth = (int) (CompDrawer.IMAGE_SCALE * (width + 4));
-		int boundsHeight = (int) (CompDrawer.IMAGE_SCALE * (height + 4)); 
-		return new Rectangle(x, y, boundsWidth, boundsHeight);
+		return new Rectangle(x, y, width, height);
 	}
 
 	/**
@@ -198,7 +194,7 @@ public class Custom extends SComponent {
 	
 	/**
 	 * Draws the label of this component at the center of the component
-	 * @param g The Graphics object to use
+	 * @param g2d The Graphics object to use
 	 */
 	private void drawLabel(Graphics2D g2d) {
 		g2d.setFont(labelFont);
