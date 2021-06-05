@@ -6,7 +6,9 @@ import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
 import com.logic.components.BasicGate;
+import com.logic.components.CompType;
 import com.logic.components.LComponent;
+import com.logic.components.Switch;
 import com.logic.input.Selection;
 import com.logic.main.LogicSimApp;
 import com.logic.test.And;
@@ -121,7 +123,7 @@ public class CompDrawer implements Serializable {
 		or.setDimension(new Dimension(80, 80));
 		//or.paintIcon(null, g2d, lcomp.getX(), lcomp.getY());
 
-		g.drawImage(LogicSimApp.iconLoader.logicImages[0].getBufferedImage(0), lcomp.getX(), lcomp.getY(), 80, 80, null);
+		g.drawImage(getActiveImage().getBufferedImage(lcomp.getRotator().getRotation()), lcomp.getX(), lcomp.getY(), 80, 80, null);
 
 		g2d.setStroke(new BasicStroke(2));
 		if(lcomp.isSelected()) ((Graphics2D) g).draw(new Rectangle(lcomp.getX(), lcomp.getY(), 64, 64));

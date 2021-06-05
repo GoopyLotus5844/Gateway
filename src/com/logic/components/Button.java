@@ -25,7 +25,7 @@ public class Button extends IComponent {
 	 */
 	public Button(int x, int y) {
 		super(x, y, CompType.BUTTON);
-		drawer.setImages(new int[] {28, 29});
+		drawer.setImages(new int[] {5, 6});
 		io.addConnection(4, 10, Connection.OUTPUT, CompRotator.DOWN);
 		setClickAction(2, 2, 5, 5);
 		setNotificationType(RELEASED);

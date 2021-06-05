@@ -22,7 +22,7 @@ public class Light extends LComponent {
 	 */
 	public Light(int x, int y) {
 		super(x, y, CompType.LIGHT);
-		drawer.setImages(new int[] {22, 23});
+		drawer.setImages(new int[] {7, 8});
 		io.addConnection(3, 10, Connection.INPUT, CompRotator.DOWN);
 	}
 	

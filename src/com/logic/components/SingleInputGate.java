@@ -29,14 +29,10 @@ public class SingleInputGate extends LComponent {
 	 */
 	public SingleInputGate(int x, int y, CompType type) {
 		super(x, y, type);
-		if(type == CompType.BUFFER) {
-			drawer.setImages(new int[] {0});
-			function = 1;
-		}
-		else if(type == CompType.NOT) {
-			drawer.setImages(new int[] {1});
-			function = 0;
-		}
+		if(type == CompType.BUFFER) function = 1;
+		else if(type == CompType.NOT) function = 0;
+		drawer.setImages(new int[] {0});
+
 		io.addConnection(0, 3, Connection.INPUT, CompRotator.LEFT);
 		io.addConnection(10, 3, Connection.OUTPUT, CompRotator.RIGHT);
 	}

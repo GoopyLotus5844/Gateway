@@ -76,9 +76,26 @@ public class IconLoader {
 		
 		for(int i = 0; i < tempLogicImages.length; i++) {
 			logicIcons[i] = new ImageIcon(tempLogicImages[i]);
-			logicImages[i] = new LogicImage(tempLogicImages[i]);
 		}
-		logicImages[0] = new LogicImage(advancedLoadImage("res/or.svg"));
+		logicImages[0] = new LogicImage(advancedLoadImage("res/buffer.svg"));
+		logicImages[1] = new LogicImage(advancedLoadImage("res/and.svg"));
+		logicImages[2] = new LogicImage(advancedLoadImage("res/or.svg"));
+
+		logicImages[3] = new LogicImage(advancedLoadImage("res/switch_off.svg"));
+		logicImages[4] = new LogicImage(advancedLoadImage("res/switch_on.svg"));
+
+		logicImages[5] = new LogicImage(advancedLoadImage("res/button_off.svg"));
+		logicImages[6] = new LogicImage(advancedLoadImage("res/button_on.svg"));
+
+		logicImages[7] = new LogicImage(advancedLoadImage("res/light_off.svg"));
+		logicImages[8] = new LogicImage(advancedLoadImage("res/light_on.svg"));
+
+		logicImages[9] = new LogicImage(advancedLoadImage("res/off_const.svg"));
+		logicImages[10] = new LogicImage(advancedLoadImage("res/on_const.svg"));
+
+		logicImages[11] = new LogicImage(advancedLoadImage("res/clock_off.svg"));
+		logicImages[12] = new LogicImage(advancedLoadImage("res/clock_on.svg"));
+
 		
 		BufferedImage[] toolBarImages = new BufferedImage[numToolBarIcons];
 		toolBarImages = readSheetSection(iconSheet, toolBarImages, 0, 57, 2, 8, 13, 13, 15, 0);

@@ -24,18 +24,6 @@ public class BasicGate extends LComponent {
 	private int function;
 	
 	/**
-	 * This value represents the difference in image indexes (in IconLoader) between any two input gate image and its corresponding three
-	 * input image
-	 */
-	private final int threeInputImageAdd = 8;
-	
-	/**
-	 * This value represents the difference in image indexes (in IconLoader) between any two input gate image and its corresponding four
-	 * input image
-	 */
-	private final int fourInputImageAdd = 14;
-	
-	/**
 	 * Constructs a new BasicGate
 	 * @param x The x position of the new gate
 	 * @param y The y position of the new gate
@@ -43,32 +31,30 @@ public class BasicGate extends LComponent {
 	 */
 	public BasicGate(int x, int y, CompType type) {
 		super(x, y, type);
-		int[] images = null;
 		if(type == CompType.AND) {
-			images = loadImages(2);
+			drawer.setImages(new int[]{1});
 			function = 0;
 		}
 		else if(type == CompType.NAND) {
-			images = loadImages(3);
+			drawer.setImages(new int[]{1});
 			function = 1;
 		}
 		else if(type == CompType.OR) {
-			images = loadImages(4);
+			drawer.setImages(new int[]{2});
 			function = 2;
 		}
 		else if(type == CompType.NOR) {
-			images = loadImages(5);
+			drawer.setImages(new int[]{2});
 			function = 3;
 		}
 		else if(type == CompType.XOR) {
-			images = loadImages(6);
+			drawer.setImages(new int[]{2});
 			function = 4;
 		}
 		else if(type == CompType.XNOR) {
-			images = loadImages(7);
+			drawer.setImages(new int[]{2});
 			function = 5;
 		}
-		drawer.setImages(images);
 		drawer.setActiveImageIndex(0);
 		io.addConnection(0, 1, Connection.INPUT, CompRotator.LEFT);
 		io.addConnection(0, 5, Connection.INPUT, CompRotator.LEFT);
@@ -76,19 +62,6 @@ public class BasicGate extends LComponent {
 		io.setInputFlexible(true);
 		io.setMaxInputs(4);
 		io.setMinInputs(2);
-	}
-	
-	/**
-	 * Gets a set of logic gate images from the IconLoader
-	 * @param twoInputImageIndex The image index of the two input gate image
-	 * @return An array of BufferedImages of length 3 where the first image has two inputs, the second has three, and the third has four
-	 */
-	private int[] loadImages(int twoInputImageIndex) {
-		int[] images = new int[3];
-		images[0] = twoInputImageIndex;
-		images[1] = twoInputImageIndex + threeInputImageAdd;
-		images[2] = twoInputImageIndex + fourInputImageAdd;
-		return images;
 	}
 	                      
 	@Override
