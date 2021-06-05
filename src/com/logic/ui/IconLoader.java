@@ -77,24 +77,24 @@ public class IconLoader {
 		for(int i = 0; i < tempLogicImages.length; i++) {
 			logicIcons[i] = new ImageIcon(tempLogicImages[i]);
 		}
-		logicImages[0] = new LogicImage(advancedLoadImage("res/buffer.svg"));
-		logicImages[1] = new LogicImage(advancedLoadImage("res/and.svg"));
-		logicImages[2] = new LogicImage(advancedLoadImage("res/or.svg"));
+		logicImages[0] = new LogicImage(advancedLoadImage("res/buffer.svg", 240, 240));
+		logicImages[1] = new LogicImage(advancedLoadImage("res/and.svg", 240, 240));
+		logicImages[2] = new LogicImage(advancedLoadImage("res/or.svg", 240, 240));
 
-		logicImages[3] = new LogicImage(advancedLoadImage("res/switch_off.svg"));
-		logicImages[4] = new LogicImage(advancedLoadImage("res/switch_on.svg"));
+		logicImages[3] = new LogicImage(advancedLoadImage("res/switch_off.svg", 180, 240));
+		logicImages[4] = new LogicImage(advancedLoadImage("res/switch_on.svg", 180, 240));
 
-		logicImages[5] = new LogicImage(advancedLoadImage("res/button_off.svg"));
-		logicImages[6] = new LogicImage(advancedLoadImage("res/button_on.svg"));
+		logicImages[5] = new LogicImage(advancedLoadImage("res/button_off.svg", 240, 240));
+		logicImages[6] = new LogicImage(advancedLoadImage("res/button_on.svg", 240, 240));
 
-		logicImages[7] = new LogicImage(advancedLoadImage("res/light_off.svg"));
-		logicImages[8] = new LogicImage(advancedLoadImage("res/light_on.svg"));
+		logicImages[7] = new LogicImage(advancedLoadImage("res/light_off.svg", 180, 240));
+		logicImages[8] = new LogicImage(advancedLoadImage("res/light_on.svg", 180, 240));
 
-		logicImages[9] = new LogicImage(advancedLoadImage("res/off_const.svg"));
-		logicImages[10] = new LogicImage(advancedLoadImage("res/on_const.svg"));
+		logicImages[9] = new LogicImage(advancedLoadImage("res/off_const.svg", 180, 240));
+		logicImages[10] = new LogicImage(advancedLoadImage("res/on_const.svg", 180, 240));
 
-		logicImages[11] = new LogicImage(advancedLoadImage("res/clock_off.svg"));
-		logicImages[12] = new LogicImage(advancedLoadImage("res/clock_on.svg"));
+		logicImages[11] = new LogicImage(advancedLoadImage("res/clock_off.svg", 240, 240));
+		logicImages[12] = new LogicImage(advancedLoadImage("res/clock_on.svg", 240, 240));
 
 		
 		BufferedImage[] toolBarImages = new BufferedImage[numToolBarIcons];
@@ -158,7 +158,7 @@ public class IconLoader {
 		return null;
 	}
 
-	public BufferedImage advancedLoadImage(String file){
+	public BufferedImage advancedLoadImage(String file, int width, int height){
 		BufferedImage image = null;
 		try (ImageInputStream input = ImageIO.createImageInputStream(new File(file))) {
 			// Get the reader
@@ -176,7 +176,7 @@ public class IconLoader {
 				ImageReadParam param = reader.getDefaultReadParam();
 
 				// Optionally, control read settings like sub sampling, source region or destination etc.
-				param.setSourceRenderSize(new Dimension(240, 240));
+				param.setSourceRenderSize(new Dimension(width, height));
 				// ...
 
 				// Finally read the image, using settings from param

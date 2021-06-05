@@ -83,8 +83,9 @@ public class CompDrawer implements Serializable {
 	 * @param g The Graphics object to use for painting
 	 */
 	public void draw(Graphics g) {
-		/*
+
 		BufferedImage currentImage = getActiveImage().getBufferedImage(lcomp.getRotator().getRotation());
+		/*
 		g.drawImage(currentImage, lcomp.getX(), lcomp.getY(),
 				(int) IMAGE_SCALE * currentImage.getWidth(), (int) IMAGE_SCALE * currentImage.getHeight(), null);
 		g.setColor(Selection.SELECT_COLOR);
@@ -123,7 +124,7 @@ public class CompDrawer implements Serializable {
 		or.setDimension(new Dimension(80, 80));
 		//or.paintIcon(null, g2d, lcomp.getX(), lcomp.getY());
 
-		g.drawImage(getActiveImage().getBufferedImage(lcomp.getRotator().getRotation()), lcomp.getX(), lcomp.getY(), 80, 80, null);
+		g.drawImage(currentImage, lcomp.getX(), lcomp.getY(), currentImage.getWidth() / 3, currentImage.getHeight() / 3, null);
 
 		g2d.setStroke(new BasicStroke(2));
 		if(lcomp.isSelected()) ((Graphics2D) g).draw(new Rectangle(lcomp.getX(), lcomp.getY(), 64, 64));
