@@ -66,11 +66,4 @@ public class Button extends IComponent {
 		result.setName(getName());
 		return result;
 	}
-	
-	@Override
-	public void increaseInputs() { }
-	
-	@Override 
-	public void decreaseInputs() { }
-
 }

@@ -82,18 +82,6 @@ public abstract class LComponent extends CircuitElement implements Deletable, Se
 	 * @return A copy of the component
 	 */
 	public abstract LComponent makeCopy();
-	
-	/**
-	 * Holds code for increasing the number of inputs, most subclasses of LComponent leave this method empty as they are not input 
-	 * flexible. Check if a given LComponent provides an implementation for this method by calling LComponent.getIO().isInputFlexible.
-	 */
-	public abstract void increaseInputs();
-	
-	/**
-	 * Holds code for decreasing the number of inputs, most subclasses of LComponent leave this method empty as they are not input 
-	 * flexible. Check if a given LComponent provides an implementation for this method by calling LComponent.getIO().isInputFlexible.
-	 */
-	public abstract void decreaseInputs();
 
 	/**
 	 * Returns a bounding box for the component based on its (x, y) position, the drawer's active image, and the current rotation

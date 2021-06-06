@@ -278,11 +278,4 @@ public class Custom extends SComponent {
 	public String getLabel() {
 		return label;
 	}
-	
-	@Override
-	public void increaseInputs() { }
-
-	@Override
-	public void decreaseInputs() { }
-
 }

@@ -73,10 +73,4 @@ public class Display extends LComponent {
 		result.setName(getName());
 		return result;
 	}
-
-	@Override
-	public void increaseInputs() { }
-	
-	@Override 
-	public void decreaseInputs() { }
 }

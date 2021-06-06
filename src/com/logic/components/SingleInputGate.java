@@ -33,8 +33,8 @@ public class SingleInputGate extends LComponent {
 		else if(type == CompType.NOT) function = 0;
 		drawer.setImages(new int[] {0});
 
-		io.addConnection(0, 3, Connection.INPUT, CompRotator.LEFT);
-		io.addConnection(10, 3, Connection.OUTPUT, CompRotator.RIGHT);
+		io.addConnection(-25, 40, Connection.INPUT, CompRotator.LEFT);
+		io.addConnection(100, 40, Connection.OUTPUT, CompRotator.RIGHT);
 	}
 	
 	@Override
@@ -54,10 +54,4 @@ public class SingleInputGate extends LComponent {
 		result.setName(getName());
 		return result;
 	}
-
-	@Override
-	public void increaseInputs() { }
-	
-	@Override 
-	public void decreaseInputs() { }
 }

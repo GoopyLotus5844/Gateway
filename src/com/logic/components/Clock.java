@@ -120,10 +120,4 @@ public class Clock extends SComponent {
 		this.delay = delay;
 		if(timer != null) timer.setDelay(delay);
 	}
-
-	@Override
-	public void increaseInputs() { }
-	
-	@Override 
-	public void decreaseInputs() { }
 }

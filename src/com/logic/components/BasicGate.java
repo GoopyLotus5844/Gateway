@@ -6,6 +6,7 @@ import java.awt.Point;
 import com.logic.engine.LogicEngine;
 import com.logic.engine.LogicFunctions;
 import com.logic.ui.CircuitPanel;
+import com.logic.ui.CompDrawer;
 import com.logic.ui.CompRotator;
 import com.logic.util.ConnectionLayout;
 
@@ -56,10 +57,12 @@ public class BasicGate extends LComponent {
 			function = 5;
 		}
 		drawer.setActiveImageIndex(0);
-		io.addConnection(0, 1, Connection.INPUT, CompRotator.LEFT);
-		io.addConnection(0, 5, Connection.INPUT, CompRotator.LEFT);
-		io.addConnection(10, 3, Connection.OUTPUT, CompRotator.RIGHT);
-		io.setInputFlexible(true);
+
+		int[] connectionPositions = calcConnectionYPositions(2);
+		for(int cy : connectionPositions){
+			io.addConnection(-25, cy, Connection.INPUT, CompRotator.LEFT);
+		}
+		io.addConnection(100, 40, Connection.OUTPUT, CompRotator.RIGHT);
 		io.setMaxInputs(4);
 		io.setMinInputs(2);
 	}
@@ -78,56 +81,21 @@ public class BasicGate extends LComponent {
 		else if(inputs == 4) output = LogicFunctions.func4s.get(function).apply(io.getInput(0), io.getInput(1), io.getInput(2), io.getInput(3));
 		io.setOutput(0, output, engine);
 	}
-	
-	@Override 
-	public void increaseInputs() {
-		if(io.getNumInputs() == 2) {
-			drawer.setActiveImageIndex(1);
-			Point[] layoutPoints = new Point[] {new Point(0, 0), new Point(0, 3)};
-			io.setConnectionLayout(new ConnectionLayout(layoutPoints, CompRotator.LEFT, Connection.INPUT));
-			io.addConnection(0, 6, Connection.INPUT, CompRotator.LEFT);
-		}
-		else if(io.getNumInputs() == 3) {
-			drawer.setActiveImageIndex(2);
-			Point[] layoutPoints = new Point[] {new Point(0, 0), new Point(0, 3), new Point(0, 7)};
-			io.setConnectionLayout(new ConnectionLayout(layoutPoints, CompRotator.LEFT,Connection.INPUT));
-			io.addConnection(0, 10, Connection.INPUT, CompRotator.LEFT);
-			layoutPoints = new Point[] {new Point(10, 5)};
-			io.setConnectionLayout(new ConnectionLayout(layoutPoints, CompRotator.RIGHT,Connection.OUTPUT));	
-		}
-	}
-	
-	@Override
-	public void decreaseInputs() {
-		if(io.getNumInputs() == 3) {
-			drawer.setActiveImageIndex(0);
-			io.removeConnection(io.connectionAt(2, Connection.INPUT));
-			Point[] layoutPoints = new Point[] {new Point(0, 1), new Point(0, 5)};
-			io.setConnectionLayout(new ConnectionLayout(layoutPoints, CompRotator.LEFT,Connection.INPUT));
-		}
-		else if(io.getNumInputs() == 4) {
-			drawer.setActiveImageIndex(1);
-			io.removeConnection(io.connectionAt(3, Connection.INPUT));
-			Point[] layoutPoints = new Point[] {new Point(0, 0), new Point(0, 3), new Point(0, 6)};
-			io.setConnectionLayout(new ConnectionLayout(layoutPoints, CompRotator.LEFT,Connection.INPUT));
-			layoutPoints = new Point[] {new Point(10, 3)};
-			io.setConnectionLayout(new ConnectionLayout(layoutPoints, CompRotator.RIGHT,Connection.OUTPUT));
-		}
-	}
 
-	public void setNumInputs(){
-
+	private int[] calcConnectionYPositions(int numConnections){
+		int start = 80 / 2 - CompDrawer.BASIC_CONNECTION_SPACING / 2 * (numConnections - 1);
+		int[] positions = new int[numConnections];
+		for(int i = 0; i < numConnections; i++){
+			positions[i] = start + i * CompDrawer.BASIC_CONNECTION_SPACING;
+		}
+		return positions;
 	}
 
 	@Override
 	public LComponent makeCopy() {
 		BasicGate result = new BasicGate(x, y, type);
 		int numInputs = io.getNumInputs();
-		if(numInputs == 3) result.increaseInputs();
-		else if(numInputs == 4) {
-			result.increaseInputs();
-			result.increaseInputs();
-		}
+		//TODO correctly copy the number of inputs to the new component
 		result.getRotator().setRotation(rotator.getRotation());
 		result.setName(getName());
 		return result;

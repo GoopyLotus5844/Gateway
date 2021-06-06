@@ -58,11 +58,4 @@ public class Switch extends IComponent {
 		result.setState(getState());
 		return result;
 	}
-
-	@Override
-	public void increaseInputs() { }
-	
-	@Override 
-	public void decreaseInputs() { }
-
 }

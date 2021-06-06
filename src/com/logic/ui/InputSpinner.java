@@ -40,6 +40,7 @@ public class InputSpinner extends LabeledSpinner implements ChangeListener {
 	 */
 	@Override
 	public void stateChanged(ChangeEvent e) {
+		/*
 		if(selection.size() == 1) {
 			LComponent lcomp = selection.get(0);
 			IOManager io = lcomp.getIO();
@@ -61,6 +62,8 @@ public class InputSpinner extends LabeledSpinner implements ChangeListener {
 				cp.repaint();
 			}
 		}
+		*/
+		//TODO implement input spinner
 	}
 
 	/**

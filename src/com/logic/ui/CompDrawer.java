@@ -27,6 +27,8 @@ public class CompDrawer implements Serializable {
  	 */
 	public static final int RENDER_SCALE = 3;
 
+	public static final int BASIC_CONNECTION_SPACING = 50;
+
 	/**
 	 * The indexes of the images that this component uses (in the IconLoader)
 	 */
@@ -72,6 +74,7 @@ public class CompDrawer implements Serializable {
 	 * @return The active image
 	 */
 	public LogicImage getActiveImage() {
+		System.out.println(activeImageIndex);
 		return LogicSimApp.iconLoader.logicImages[images[activeImageIndex]];
 	}
 	

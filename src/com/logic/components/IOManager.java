@@ -29,11 +29,6 @@ public class IOManager implements Deletable, Serializable {
 	private LComponent lcomp;
 	
 	/**
-	 * True if the owner component supports input increase/decrease by the user, false otherwise
-	 */
-	private boolean inputFlexible = false;
-	
-	/**
 	 * The maximum number of inputs that the LComponent can be expanded to (has no effect if component is not input flexible)
 	 */
 	private int maxInputs = 20;
@@ -46,7 +41,6 @@ public class IOManager implements Deletable, Serializable {
 	/**
 	 * Constructs a new IOManager
 	 * @param lcomp The LComponent creating this ConnectionManager
-	 * @param cp The CircuitPanel instance on the LComponent
 	 */
 	public IOManager(LComponent lcomp) {
 		this.lcomp = lcomp;
@@ -165,25 +159,7 @@ public class IOManager implements Deletable, Serializable {
 		}
 		return null;
 	}
-	
-	/**
-	 * Tells whether the component is input flexible
-	 * @return A boolean telling whether the component is input flexible
-	 */
-	public boolean isInputFlexible() {
-		return inputFlexible;
-	}
-	
-	/**
-	 * Used by the constructor of a subclass of LComponent to specify whether the component supports input increase/decrease. A parameter of
-	 * true should only be given if the component has code for handling input increase/decrease in its increaseInputs() and decreaseInputs()
-	 * method
-	 * @param inputFlexible If the component supports input increase/decrease
-	 */
-	public void setInputFlexible(boolean inputFlexible) {
-		this.inputFlexible = inputFlexible;
-	}
-	
+
 	@Override
 	public void delete() {
 		for(int i = 0; i < inputs.size(); i++) {

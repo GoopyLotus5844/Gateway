@@ -13,12 +13,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import com.logic.components.Clock;
-import com.logic.components.Connection;
-import com.logic.components.Custom;
-import com.logic.components.IOManager;
-import com.logic.components.LComponent;
-import com.logic.components.Wire;
+import com.logic.components.*;
 import com.logic.input.Selection;
 import com.logic.util.GraphicsUtils;
 import com.logic.util.NameConverter;
@@ -226,7 +221,7 @@ public class CompProperties extends JPanel {
 			nameField.setText(lcomp.getName());
 			location.setPoint(new Point(lcomp.getX(), lcomp.getY()));
 			inputSpinner.getSpinner().setValue(lcomp.getIO().getNumInputs());
-			inputSpinner.getSpinner().setEnabled(lcomp.getIO().isInputFlexible());
+			inputSpinner.getSpinner().setEnabled(lcomp instanceof BasicGate);
 			rotationSpinner.getSpinner().setValue(NameConverter.rotationFromValue(lcomp.getRotator().getRotation()));
 			connectionLabel.setText(makeConnectionList(lcomp));
 			commentArea.setText(lcomp.getComments());
