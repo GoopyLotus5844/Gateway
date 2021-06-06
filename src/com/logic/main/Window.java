@@ -1,8 +1,6 @@
 package com.logic.main;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import java.awt.*;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -47,12 +45,11 @@ public class Window extends JFrame {
 	
 	/**
 	 * Instantiates all main classes that the program uses and displays the GUI
-	 * @param The path of the file in the new window, which can be null if it is a new file
+	 * @param path The path of the file in the new window, which can be null if it is a new file
 	 * @return A FileManager that reflects the given path or lack thereof
 	 */
 	private FileManager createAndShowGUI(String path) {
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		setSize(screenSize.width, screenSize.height);
+		setBounds(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds());
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		JPanel mainPanel = new JPanel();
