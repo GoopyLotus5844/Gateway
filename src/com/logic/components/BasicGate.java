@@ -58,11 +58,11 @@ public class BasicGate extends LComponent {
 		}
 		drawer.setActiveImageIndex(0);
 
-		int[] connectionPositions = calcConnectionYPositions(2);
+		int[] connectionPositions = calcConnectionYPositions(3);
 		for(int cy : connectionPositions){
 			io.addConnection(-25, cy, Connection.INPUT, CompRotator.LEFT);
 		}
-		io.addConnection(100, 40, Connection.OUTPUT, CompRotator.RIGHT);
+		io.addConnection(110, 40, Connection.OUTPUT, CompRotator.RIGHT);
 		io.setMaxInputs(4);
 		io.setMinInputs(2);
 	}

@@ -3,6 +3,7 @@ package com.logic.ui;
 import java.awt.*;
 import java.awt.geom.GeneralPath;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.Serializable;
 
 import com.logic.components.*;
@@ -84,62 +85,64 @@ public class CompDrawer implements Serializable {
 	 * @param g The Graphics object to use for painting
 	 */
 	public void draw(Graphics g) {
-		/*
-		GeneralPath shape = new GeneralPath();
-		shape.moveTo(lcomp.getX() - 8, lcomp.getY() + 3);
-		shape.curveTo(lcomp.getX() + 5, lcomp.getY() + 30, lcomp.getX() + 5, lcomp.getY() + 50, lcomp.getX() - 8, lcomp.getY() + 77);
 		Graphics2D g2d = (Graphics2D) g;
-		g2d.setColor(Color.BLACK);
-		g2d.setStroke(new BasicStroke(4, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-		g2d.draw(shape);
+		CompType type = lcomp.getType();
+		IOManager io = lcomp.getIO();
+		int x = lcomp.getX(), y = lcomp.getY();
 
-		g2d.drawLine(lcomp.getX() + 12, lcomp.getY() + 15, lcomp.getX() - 30, lcomp.getY() + 15);
-		g2d.drawLine(lcomp.getX() + 12, lcomp.getY() + 65, lcomp.getX() - 30, lcomp.getY() + 65);
-		g2d.drawLine(lcomp.getX() + 80, lcomp.getY() + 40, lcomp.getX() + 120, lcomp.getY() + 40);
+		for(int i = 0; i < io.getNumInputs(); i++) {
+			drawConnection(io.connectionAt(i, Connection.INPUT), g2d);
+		}
 
-		g2d.setStroke(new BasicStroke(2));
-		g2d.setColor(Color.WHITE);
-		g2d.fillOval(lcomp.getX() + 80, lcomp.getY() + 32, 14, 14);
-		g2d.setColor(Color.BLACK);
-		g2d.drawOval(lcomp.getX() + 80, lcomp.getY() + 32, 15, 15);
-		g2d.setStroke(new BasicStroke(4));
-		g2d.drawLine(lcomp.getX() + 12, lcomp.getY() - 10, lcomp.getX() + 12, lcomp.getY() + 90);
+		for(int i = 0; i < io.getNumOutputs(); i++) {
+			drawConnection(io.connectionAt(i, Connection.OUTPUT), g2d);
+		}
 
-		g2d.setColor(Selection.SELECT_COLOR);
-		g2d.fillOval(lcomp.getX() - 37, lcomp.getY() + 6, 18, 18);
-		g2d.fillOval(lcomp.getX() - 37, lcomp.getY() + 56, 18, 18);
-		g2d.fillOval(lcomp.getX() + 111, lcomp.getY() + 31, 18, 18);
-		 */
+		if(lcomp instanceof BasicGate && io.getNumInputs() > 2) {
+			Point p1 = io.connectionAt(0, Connection.INPUT).getCoord();
+			Point p2 = io.connectionAt(io.getNumInputs() - 1, Connection.INPUT).getCoord();
+			g2d.setColor(Color.BLACK);
+			g2d.drawLine(x + 12, p1.y, x + 12, p2.y);
+		}
+
+		if(type == CompType.XOR || type == CompType.XNOR) {
+			GeneralPath shape = new GeneralPath();
+			shape.moveTo(x - 8, y + 3);
+			shape.curveTo(x + 5, y + 30, x + 5, y + 50, x - 8, y + 77);
+			g2d.setColor(Color.BLACK);
+			g2d.setStroke(new BasicStroke(4, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+			g2d.draw(shape);
+		}
 
 		BufferedImage currentImage = getActiveImage().getBufferedImage(lcomp.getRotator().getRotation());
-		g.drawImage(currentImage, lcomp.getX(), lcomp.getY(), currentImage.getWidth() / RENDER_SCALE, currentImage.getHeight() / RENDER_SCALE, null);
+		g.drawImage(currentImage, x, y,currentImage.getWidth() / RENDER_SCALE, currentImage.getHeight() / RENDER_SCALE, null);
+
+		if(type == CompType.NOT || type == CompType.NAND || type == CompType.NOR || type == CompType.XNOR){
+			g2d.setStroke(new BasicStroke(2));
+			g2d.setColor(Color.WHITE);
+			g2d.fillOval(x + 75, y + 32, 14, 14);
+			g2d.setColor(Color.BLACK);
+			g2d.drawOval(x + 75, y + 32, 15, 15);
+		}
 
 		if(lcomp.isSelected()) {
 			g.setColor(Selection.SELECT_COLOR);
-			((Graphics2D) g).setStroke(new BasicStroke(2));
-			((Graphics2D) g).draw(lcomp.getBounds());
+			g2d.setStroke(new BasicStroke(2));
+			g2d.draw(lcomp.getBounds());
 		}
+	}
 
-		for(int i = 0; i < lcomp.getIO().getNumInputs(); i++) {
-			Point p = lcomp.getIO().connectionAt(i, Connection.INPUT).getCoord();
-			g.setColor(Selection.SELECT_COLOR);
-			g.fillOval(p.x - 9, p.y - 9, 18, 18);
-		}
-
-		for(int i = 0; i < lcomp.getIO().getNumOutputs(); i++) {
-			Point p = lcomp.getIO().connectionAt(i, Connection.OUTPUT).getCoord();
-			g.setColor(Selection.SELECT_COLOR);
-			g.fillOval(p.x - 9, p.y - 9, 18, 18);
-		}
-
-		/*
-		Conclusions:
-		Image size 80x80
-		Inputs spaced 50 apart
-		For more than two inputs, draw vertical line at x + 12 to connect the inputs
-		Draw not dot at x + 80
-		exclusive curve starts and ends at x - 8
-		 */
+	private void drawConnection(Connection c, Graphics2D g2d){
+		Point p = c.getCoord();
+		g2d.setColor(Color.BLACK);
+		g2d.setStroke(new BasicStroke(3));
+		int direction = c.getAbsoluteDirection();
+		if(direction == CompRotator.RIGHT) g2d.drawLine(p.x, p.y, p.x - 35, p.y);
+		if(direction == CompRotator.UP) g2d.drawLine(p.x, p.y, p.x, p.y + 35);
+		if(direction == CompRotator.LEFT) g2d.drawLine(p.x, p.y, p.x + 35, p.y);
+		if(direction == CompRotator.DOWN) g2d.drawLine(p.x, p.y, p.x, p.y - 35);
+		g2d.setColor(Selection.SELECT_COLOR);
+		g2d.fillOval(p.x - 9, p.y - 9, 18, 18);
 	}
 	
 	/**
@@ -151,5 +154,4 @@ public class CompDrawer implements Serializable {
 	public void setImages(int[] images) {
 		this.images = images;
 	}
-	
 }

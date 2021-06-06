@@ -34,7 +34,7 @@ public class SingleInputGate extends LComponent {
 		drawer.setImages(new int[] {0});
 
 		io.addConnection(-25, 40, Connection.INPUT, CompRotator.LEFT);
-		io.addConnection(100, 40, Connection.OUTPUT, CompRotator.RIGHT);
+		io.addConnection(105, 40, Connection.OUTPUT, CompRotator.RIGHT);
 	}
 	
 	@Override
