@@ -1,7 +1,9 @@
 package com.logic.ui;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.Serializable;
@@ -28,7 +30,10 @@ public class CompDrawer implements Serializable {
  	 */
 	public static final int RENDER_SCALE = 3;
 
-	public static final int BASIC_CONNECTION_SPACING = 50;
+	/**
+	 * The amount of space between consecutive inputs on a BasicGate
+	 */
+	public static final int BASIC_INPUT_SPACING = 50;
 
 	/**
 	 * The indexes of the images that this component uses (in the IconLoader)
@@ -55,14 +60,6 @@ public class CompDrawer implements Serializable {
 	}
 	
 	/**
-	 * Returns the active image
-	 * @return The active image index
-	 */
-	public int getActiveImageIndex() {
-		return activeImageIndex;  
-	}
-	
-	/**
 	 * Sets the active image
 	 * @param activeImageIndex The new active image index
 	 */
@@ -75,7 +72,6 @@ public class CompDrawer implements Serializable {
 	 * @return The active image
 	 */
 	public LogicImage getActiveImage() {
-		System.out.println(activeImageIndex);
 		return LogicSimApp.iconLoader.logicImages[images[activeImageIndex]];
 	}
 	
@@ -88,23 +84,33 @@ public class CompDrawer implements Serializable {
 		Graphics2D g2d = (Graphics2D) g;
 		CompType type = lcomp.getType();
 		IOManager io = lcomp.getIO();
+		BufferedImage currentImage = getActiveImage().getBufferedImage(CompRotator.RIGHT);
 		int x = lcomp.getX(), y = lcomp.getY();
+		int width = currentImage.getWidth() / RENDER_SCALE, height = currentImage.getHeight() / RENDER_SCALE;
+		int rotation = lcomp.getRotator().getRotation();
 
+		//render connections with lines using manual rotation math
+		Point barStart = null, barStop = null;
 		for(int i = 0; i < io.getNumInputs(); i++) {
-			drawConnection(io.connectionAt(i, Connection.INPUT), g2d);
+			Point result = drawConnection(io.connectionAt(i, Connection.INPUT), g2d);
+			if(i == 0) barStart = result;
+			if(i == io.getNumInputs() - 1) barStop = result;
 		}
-
 		for(int i = 0; i < io.getNumOutputs(); i++) {
 			drawConnection(io.connectionAt(i, Connection.OUTPUT), g2d);
 		}
 
+		//render crossbar across the connections if there are more than 2 inputs
 		if(lcomp instanceof BasicGate && io.getNumInputs() > 2) {
-			Point p1 = io.connectionAt(0, Connection.INPUT).getCoord();
-			Point p2 = io.connectionAt(io.getNumInputs() - 1, Connection.INPUT).getCoord();
 			g2d.setColor(Color.BLACK);
-			g2d.drawLine(x + 12, p1.y, x + 12, p2.y);
+			g2d.drawLine(barStart.x, barStart.y, barStop.x, barStop.y);
 		}
 
+		//Rotate the graphics object so that the body of the component is always aligned with the upper right corner of its bounds rectangle
+		AffineTransform at = getTransform(rotation, x, y, width, height);
+		g2d.transform(at);
+
+		//Render curved bar for XOR and XNOR
 		if(type == CompType.XOR || type == CompType.XNOR) {
 			GeneralPath shape = new GeneralPath();
 			shape.moveTo(x - 8, y + 3);
@@ -114,35 +120,89 @@ public class CompDrawer implements Serializable {
 			g2d.draw(shape);
 		}
 
-		BufferedImage currentImage = getActiveImage().getBufferedImage(lcomp.getRotator().getRotation());
-		g.drawImage(currentImage, x, y,currentImage.getWidth() / RENDER_SCALE, currentImage.getHeight() / RENDER_SCALE, null);
+		//Render the body of the gate
+		g.drawImage(currentImage, x, y, width, height, null);
 
+		//Render a dot to show if the gate is inverted
 		if(type == CompType.NOT || type == CompType.NAND || type == CompType.NOR || type == CompType.XNOR){
 			g2d.setStroke(new BasicStroke(2));
 			g2d.setColor(Color.WHITE);
-			g2d.fillOval(x + 75, y + 32, 14, 14);
+			g2d.fillOval(x + 75, y + 33, 14, 14);
 			g2d.setColor(Color.BLACK);
-			g2d.drawOval(x + 75, y + 32, 15, 15);
+			g2d.drawOval(x + 75, y + 33, 15, 15);
 		}
 
+		//Undo the graphics transformation
+		try {
+			at.invert();
+			g2d.transform(at);
+		} catch (NoninvertibleTransformException e) {
+			e.printStackTrace();
+		}
+
+		//Render a blue box around the body of the component if it is selected
 		if(lcomp.isSelected()) {
 			g.setColor(Selection.SELECT_COLOR);
 			g2d.setStroke(new BasicStroke(2));
 			g2d.draw(lcomp.getBounds());
 		}
+		//TODO refactor this mess somehow idk
 	}
 
-	private void drawConnection(Connection c, Graphics2D g2d){
+	/**
+	 * Draws a line with a dot to represent a connection, taking the direction of the connection into account.  Returns a point showing
+	 * the other end of the line, which is used for drawing another connecting line on a BasicGate when there are many inputs.
+	 * @param c The connection to render
+	 * @param g2d The Graphics2D object to use
+	 * @return The endpoint of the line opposite the connection.
+	 */
+	private Point drawConnection(Connection c, Graphics2D g2d){
 		Point p = c.getCoord();
 		g2d.setColor(Color.BLACK);
 		g2d.setStroke(new BasicStroke(3));
 		int direction = c.getAbsoluteDirection();
-		if(direction == CompRotator.RIGHT) g2d.drawLine(p.x, p.y, p.x - 35, p.y);
-		if(direction == CompRotator.UP) g2d.drawLine(p.x, p.y, p.x, p.y + 35);
-		if(direction == CompRotator.LEFT) g2d.drawLine(p.x, p.y, p.x + 35, p.y);
-		if(direction == CompRotator.DOWN) g2d.drawLine(p.x, p.y, p.x, p.y - 35);
+		Point connectEnd = null;
+		if(direction == CompRotator.RIGHT) {
+			g2d.drawLine(p.x, p.y, p.x - 35, p.y);
+			connectEnd = new Point(p.x - 35, p.y);
+		}
+		if(direction == CompRotator.UP) {
+			g2d.drawLine(p.x, p.y, p.x, p.y + 35);
+			connectEnd = new Point(p.x, p.y + 35);
+		}
+		if(direction == CompRotator.LEFT) {
+			g2d.drawLine(p.x, p.y, p.x + 35, p.y);
+			connectEnd = new Point(p.x + 35, p.y);
+		}
+		if(direction == CompRotator.DOWN) {
+			g2d.drawLine(p.x, p.y, p.x, p.y - 35);
+			connectEnd = new Point(p.x, p.y - 35);
+		}
 		g2d.setColor(Selection.SELECT_COLOR);
 		g2d.fillOval(p.x - 9, p.y - 9, 18, 18);
+		return connectEnd;
+	}
+
+	private AffineTransform getTransform(int direction, int x, int y, int width, int height){
+		double theta = 0;
+		int tx = 0, ty = 0;
+		if(direction == CompRotator.UP) {
+			theta = -Math.PI / 2;
+			tx = -width;
+		}
+		else if(direction == CompRotator.LEFT) {
+			theta = Math.PI;
+			tx = -width;
+			ty = -height;
+		}
+		else if(direction == CompRotator.DOWN) {
+			theta = Math.PI / 2;
+			ty = -height;
+		}
+		AffineTransform at = new AffineTransform();
+		at.rotate(theta, x, y);
+		at.translate(tx, ty);
+		return at;
 	}
 	
 	/**

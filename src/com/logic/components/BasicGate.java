@@ -83,10 +83,10 @@ public class BasicGate extends LComponent {
 	}
 
 	private int[] calcConnectionYPositions(int numConnections){
-		int start = 80 / 2 - CompDrawer.BASIC_CONNECTION_SPACING / 2 * (numConnections - 1);
+		int start = 80 / 2 - CompDrawer.BASIC_INPUT_SPACING / 2 * (numConnections - 1);
 		int[] positions = new int[numConnections];
 		for(int i = 0; i < numConnections; i++){
-			positions[i] = start + i * CompDrawer.BASIC_CONNECTION_SPACING;
+			positions[i] = start + i * CompDrawer.BASIC_INPUT_SPACING;
 		}
 		return positions;
 	}

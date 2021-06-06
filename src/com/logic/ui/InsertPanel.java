@@ -28,7 +28,7 @@ public class InsertPanel extends JPanel implements ActionListener {
 	/**
 	 * The values by which to scale each logic image, in the same order as the array of logic names
 	 */
-	private float[] scales = new float[] {5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3.5f};
+	//private float[] scales = new float[] {5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3.5f};
 	
 	/**
 	 * The indexes in the logic image array to skip (because they are different versions of the same component)
@@ -87,8 +87,9 @@ public class InsertPanel extends JPanel implements ActionListener {
 	 */
 	private ImageIcon getLogicIcon(int imageIndex, int arrIndex) {
 		ImageIcon original = LogicSimApp.iconLoader.logicIcons[imageIndex];
-		return IconLoader.getScaledImage(original, (int) (original.getIconWidth() * scales[arrIndex]), 
-				(int) (original.getIconHeight() * scales[arrIndex]));
+		return IconLoader.getScaledImage(original, (int) (original.getIconWidth()),
+				(int) (original.getIconHeight()));
+		//TODO this method and IconLoader.getScaledImage should eventually be removed
 	}
 	
 	/**

@@ -96,6 +96,7 @@ public class IconLoader {
 		logicImages[11] = new LogicImage(advancedLoadImage("res/clock_off.svg", 240, 240));
 		logicImages[12] = new LogicImage(advancedLoadImage("res/clock_on.svg", 240, 240));
 
+		logicIcons[0] = new ImageIcon(advancedLoadImage("res/buffer.svg", 55, 55));
 		
 		BufferedImage[] toolBarImages = new BufferedImage[numToolBarIcons];
 		toolBarImages = readSheetSection(iconSheet, toolBarImages, 0, 57, 2, 8, 13, 13, 15, 0);
