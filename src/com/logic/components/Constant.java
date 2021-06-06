@@ -25,7 +25,7 @@ public class Constant extends LComponent {
 		super(x, y, type);
 		if(type == CompType.ONE) drawer.setImages(new int[] {10});
 		else if(type == CompType.ZERO) drawer.setImages(new int[] {9});
-		io.addConnection(8, 4, Connection.OUTPUT, CompRotator.RIGHT);
+		io.addConnection(80, 40, Connection.OUTPUT, CompRotator.RIGHT);
 	}
 	
 	@Override

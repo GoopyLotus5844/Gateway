@@ -101,7 +101,7 @@ public abstract class LComponent extends CircuitElement implements Deletable, Se
 	 */
 	public Rectangle getBounds() {
 		BufferedImage image = drawer.getActiveImage().getBufferedImage(rotator.getRotation());
-		return new Rectangle(x, y, image.getWidth(), image.getHeight());
+		return new Rectangle(x, y, image.getWidth() / CompDrawer.RENDER_SCALE, image.getHeight() / CompDrawer.RENDER_SCALE);
 	}
 	
 	/**
@@ -110,7 +110,7 @@ public abstract class LComponent extends CircuitElement implements Deletable, Se
 	 */
 	public Rectangle getBoundsRight() {
 		BufferedImage image = drawer.getActiveImage().getBufferedImage(CompRotator.RIGHT);
-		return new Rectangle(x, y, image.getWidth(), image.getHeight());
+		return new Rectangle(x, y, image.getWidth() / CompDrawer.RENDER_SCALE, image.getHeight() / CompDrawer.RENDER_SCALE);
 	}
 	
 	/**

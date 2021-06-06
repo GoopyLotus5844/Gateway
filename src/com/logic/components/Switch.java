@@ -25,8 +25,8 @@ public class Switch extends IComponent {
 	public Switch(int x, int y) {
 		super(x, y, CompType.SWITCH);
 		drawer.setImages(new int[] {3, 4});
-		io.addConnection(8, 4, Connection.OUTPUT, CompRotator.RIGHT);
-		setClickAction(2, 2, 3, 5);
+		io.addConnection(80, 40, Connection.OUTPUT, CompRotator.RIGHT);
+		setClickAction(15, 15, 30, 50);
 	}
 	
 	@Override
