@@ -3,6 +3,7 @@ package com.logic.ui;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import com.logic.components.BasicGate;
 import com.logic.components.IOManager;
 import com.logic.components.LComponent;
 import com.logic.input.CircuitState;
@@ -40,30 +41,19 @@ public class InputSpinner extends LabeledSpinner implements ChangeListener {
 	 */
 	@Override
 	public void stateChanged(ChangeEvent e) {
-		/*
-		if(selection.size() == 1) {
+		if(selection.size() == 1){
 			LComponent lcomp = selection.get(0);
-			IOManager io = lcomp.getIO();
-			if(io.isInputFlexible()) {
+			if(lcomp instanceof BasicGate) {
+				BasicGate gate = (BasicGate) lcomp;
 				int value = (int) spinner.getValue();
-				int maxInputs = io.getMaxInputs();
-				int minInputs = io.getMinInputs();
-				if(value > maxInputs) value = maxInputs;
-				else if(value < minInputs) value = minInputs;
+				if(value > BasicGate.MAX_INPUTS) value = BasicGate.MAX_INPUTS;
+				else if(value < BasicGate.MIN_INPUTS) value = BasicGate.MIN_INPUTS;
 				spinner.setValue(value);
-				if(value > lcomp.getIO().getNumInputs()) {
-					lcomp.increaseInputs();
-					cp.getEditor().getRevision().saveState(new CircuitState(cp));
-				}
-				else if(value < lcomp.getIO().getNumInputs()) {
-					lcomp.decreaseInputs();
-					cp.getEditor().getRevision().saveState(new CircuitState(cp));
-				}
+				gate.setNumInputs(value);
+				cp.getEditor().getRevision().saveState(new CircuitState(cp));
 				cp.repaint();
 			}
 		}
-		*/
-		//TODO implement input spinner
 	}
 
 	/**

@@ -20,17 +20,33 @@ public class BasicGate extends LComponent {
 	private static final long serialVersionUID = 1L;
 
 	/**
+	 * The maximum, minimum, and default number of inputs a BasicGate can have
+	 */
+	public static final int MIN_INPUTS = 2, MAX_INPUTS = 10, DEFAULT_INPUTS = 2;
+
+	/**
 	 * The index of the Function that will be used to evaluate the output of this gate
 	 */
 	private int function;
-	
+
+	/**
+	 * Constructs a new BasicGate with the default number of inputs
+	 * @param x The x position of the new gate
+	 * @param y The y position of the new gate
+	 * @param type The type of gate (see other constructor)
+	 */
+	public BasicGate(int x, int y, CompType type){
+		this(x, y, DEFAULT_INPUTS, type);
+	}
+
 	/**
 	 * Constructs a new BasicGate
 	 * @param x The x position of the new gate
 	 * @param y The y position of the new gate
+	 * @param numInputs The number of inputs, will be rounded to max / min if out of bounds
 	 * @param type The type of gate (valid values are CompType.AND, CompType.NAND, CompType.OR, CompType.NOR, CompType.XOR, and CompType.XNOR)
 	 */
-	public BasicGate(int x, int y, CompType type) {
+	public BasicGate(int x, int y, int numInputs, CompType type) {
 		super(x, y, type);
 		if(type == CompType.AND) {
 			drawer.setImages(new int[]{1});
@@ -58,13 +74,13 @@ public class BasicGate extends LComponent {
 		}
 		drawer.setActiveImageIndex(0);
 
-		int[] connectionPositions = calcConnectionYPositions(3);
-		for(int cy : connectionPositions){
-			io.addConnection(-25, cy, Connection.INPUT, CompRotator.LEFT);
+		if(numInputs > MAX_INPUTS) numInputs = MAX_INPUTS;
+		else if(numInputs < MIN_INPUTS) numInputs = MIN_INPUTS;
+		Point[] connectionPositions = calcInputPositions(-25, numInputs);
+		for(Point p : connectionPositions){
+			io.addConnection(p.x, p.y, Connection.INPUT, CompRotator.LEFT);
 		}
 		io.addConnection(110, 40, Connection.OUTPUT, CompRotator.RIGHT);
-		io.setMaxInputs(4);
-		io.setMinInputs(2);
 	}
 	                      
 	@Override
@@ -82,23 +98,47 @@ public class BasicGate extends LComponent {
 		io.setOutput(0, output, engine);
 	}
 
-	private int[] calcConnectionYPositions(int numConnections){
+	/**
+	 * Sets the number of inputs.  Unlike the constructor, the method will do nothing and exit if the number of inputs is out of bounds
+	 * @param numInputs The number of inputs
+	 */
+	public void setNumInputs(int numInputs){
+		if(numInputs < MIN_INPUTS || numInputs > MAX_INPUTS) return;
+		int currentNum = io.getNumInputs();
+		if(numInputs > currentNum) {
+			for(int i = 0; i < numInputs - currentNum; i++){
+				io.addConnection(0, 0, Connection.INPUT, CompRotator.LEFT);
+			}
+		}
+		else if(numInputs < currentNum){
+			for(int i = 0; i < currentNum - numInputs; i++){
+				io.removeConnection(io.connectionAt(io.getNumInputs() - 1, Connection.INPUT));
+			}
+		}
+		Point[] positions = calcInputPositions(-25, numInputs);
+		io.setConnectionLayout(new ConnectionLayout(positions, CompRotator.LEFT, Connection.INPUT));
+	}
+
+	/**
+	 * Calculates the positions of each input so that they are centered and equally spaced in the y direction
+	 * @param xPos The x position that all of the inputs will have
+	 * @param numConnections The number of inputs the component will have
+	 * @return An array of points showing the input positions
+	 */
+	private Point[] calcInputPositions(int xPos, int numConnections){
 		int start = 80 / 2 - CompDrawer.BASIC_INPUT_SPACING / 2 * (numConnections - 1);
-		int[] positions = new int[numConnections];
+		Point[] positions = new Point[numConnections];
 		for(int i = 0; i < numConnections; i++){
-			positions[i] = start + i * CompDrawer.BASIC_INPUT_SPACING;
+			positions[i] = new Point(xPos, start + i * CompDrawer.BASIC_INPUT_SPACING);
 		}
 		return positions;
 	}
 
 	@Override
 	public LComponent makeCopy() {
-		BasicGate result = new BasicGate(x, y, type);
-		int numInputs = io.getNumInputs();
-		//TODO correctly copy the number of inputs to the new component
+		BasicGate result = new BasicGate(x, y, io.getNumInputs(), type);
 		result.getRotator().setRotation(rotator.getRotation());
 		result.setName(getName());
 		return result;
 	}
-	
 }

@@ -29,16 +29,6 @@ public class IOManager implements Deletable, Serializable {
 	private LComponent lcomp;
 	
 	/**
-	 * The maximum number of inputs that the LComponent can be expanded to (has no effect if component is not input flexible)
-	 */
-	private int maxInputs = 20;
-	
-	/**
-	 * The minimum number of inputs that the LComponent can be decreased to (has no effect if component is not input flexible)
-	 */
-	private int minInputs = 0;
-	
-	/**
 	 * Constructs a new IOManager
 	 * @param lcomp The LComponent creating this ConnectionManager
 	 */
@@ -169,7 +159,7 @@ public class IOManager implements Deletable, Serializable {
 			outputs.get(i).delete();
 		}
 	}
-	
+
 	/**
 	 * Returns the number of input connections
 	 * @return The number of input connections
@@ -177,7 +167,7 @@ public class IOManager implements Deletable, Serializable {
 	public int getNumInputs() {
 		return inputs.size();
 	}
-	
+
 	/**
 	 * Returns the number of output connections
 	 * @return The number of output connections
@@ -185,37 +175,4 @@ public class IOManager implements Deletable, Serializable {
 	public int getNumOutputs() {
 		return outputs.size();
 	}
-
-	/**
-	 * Returns the max inputs
-	 * @return The max inputs
-	 */
-	public int getMaxInputs() {
-		return maxInputs;
-	}
-
-	/**
-	 * Sets the maxInputs
-	 * @param maxInputs The maximum number of inputs allowed when increasing inputs
-	 */
-	public void setMaxInputs(int maxInputs) {
-		this.maxInputs = maxInputs;
-	}
-
-	/**
-	 * Returns the minimum inputs
-	 * @return The minimum inputs
-	 */
-	public int getMinInputs() {
-		return minInputs;
-	}
-
-	/**
-	 * Sets the minInputs
-	 * @param minInputs The minimum number of inputs allowed when decreasing inputs
-	 */
-	public void setMinInputs(int minInputs) {
-		this.minInputs = minInputs;
-	}
-
 }
