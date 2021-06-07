@@ -163,20 +163,20 @@ public class CompDrawer implements Serializable {
 		int direction = c.getAbsoluteDirection();
 		Point connectEnd = null;
 		if(direction == CompRotator.RIGHT) {
-			g2d.drawLine(p.x, p.y, p.x - 35, p.y);
-			connectEnd = new Point(p.x - 35, p.y);
+			g2d.drawLine(p.x, p.y, p.x - 37, p.y);
+			connectEnd = new Point(p.x - 37, p.y);
 		}
 		if(direction == CompRotator.UP) {
-			g2d.drawLine(p.x, p.y, p.x, p.y + 35);
-			connectEnd = new Point(p.x, p.y + 35);
+			g2d.drawLine(p.x, p.y, p.x, p.y + 37);
+			connectEnd = new Point(p.x, p.y + 37);
 		}
 		if(direction == CompRotator.LEFT) {
-			g2d.drawLine(p.x, p.y, p.x + 35, p.y);
-			connectEnd = new Point(p.x + 35, p.y);
+			g2d.drawLine(p.x, p.y, p.x + 37, p.y);
+			connectEnd = new Point(p.x + 37, p.y);
 		}
 		if(direction == CompRotator.DOWN) {
-			g2d.drawLine(p.x, p.y, p.x, p.y - 35);
-			connectEnd = new Point(p.x, p.y - 35);
+			g2d.drawLine(p.x, p.y, p.x, p.y - 37);
+			connectEnd = new Point(p.x, p.y - 37);
 		}
 		g2d.setColor(Selection.SELECT_COLOR);
 		g2d.fillOval(p.x - 9, p.y - 9, 18, 18);

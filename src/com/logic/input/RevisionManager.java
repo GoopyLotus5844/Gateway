@@ -99,4 +99,8 @@ public class RevisionManager {
 			index--;
 		}
 	}
+
+	public boolean hasEdits(){
+		return index > 0;
+	}
 }

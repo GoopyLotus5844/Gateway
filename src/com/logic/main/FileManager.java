@@ -94,7 +94,7 @@ public class FileManager {
 		if(fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 			File file = fc.getSelectedFile();
 			String path = file.getAbsolutePath();
-			openFile(path, true);
+			openFile(path, cp.getEditor().getRevision().hasEdits());
 		}
 	}
 	
