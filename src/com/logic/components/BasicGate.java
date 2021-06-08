@@ -30,6 +30,11 @@ public class BasicGate extends LComponent {
 	private int function;
 
 	/**
+	 * Shows if the gate is a "not" variant of the normal gate
+	 */
+	private boolean inverted;
+
+	/**
 	 * Constructs a new BasicGate with the default number of inputs
 	 * @param x The x position of the new gate
 	 * @param y The y position of the new gate
@@ -50,27 +55,33 @@ public class BasicGate extends LComponent {
 		super(x, y, type);
 		if(type == CompType.AND) {
 			drawer.setImages(new int[]{1});
+			inverted = false;
 			function = 0;
 		}
 		else if(type == CompType.NAND) {
 			drawer.setImages(new int[]{1});
-			function = 1;
+			inverted = true;
+			function = 0;
 		}
 		else if(type == CompType.OR) {
 			drawer.setImages(new int[]{2});
-			function = 2;
+			inverted = false;
+			function = 1;
 		}
 		else if(type == CompType.NOR) {
 			drawer.setImages(new int[]{2});
-			function = 3;
+			inverted = true;
+			function = 1;
 		}
 		else if(type == CompType.XOR) {
 			drawer.setImages(new int[]{2});
-			function = 4;
+			inverted = false;
+			function = 2;
 		}
 		else if(type == CompType.XNOR) {
 			drawer.setImages(new int[]{2});
-			function = 5;
+			inverted = true;
+			function = 2;
 		}
 		drawer.setActiveImageIndex(0);
 
@@ -91,11 +102,11 @@ public class BasicGate extends LComponent {
 	@Override
 	public void update(LogicEngine engine) {
 		int inputs = io.getNumInputs();
-		boolean output = false;
-		if(inputs == 2) output = LogicFunctions.func2s.get(function).apply(io.getInput(0), io.getInput(1));
-		else if(inputs == 3) output = LogicFunctions.func3s.get(function).apply(io.getInput(0), io.getInput(1), io.getInput(2));
-		else if(inputs == 4) output = LogicFunctions.func4s.get(function).apply(io.getInput(0), io.getInput(1), io.getInput(2), io.getInput(3));
-		io.setOutput(0, output, engine);
+		boolean output = io.getInput(0);
+		for(int i = 1; i < inputs; i++){
+			output = LogicFunctions.func2s.get(function).apply(output, io.getInput(i));
+		}
+		io.setOutput(0, inverted != output, engine);
 	}
 
 	/**
