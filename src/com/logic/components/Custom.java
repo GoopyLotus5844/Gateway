@@ -1,12 +1,6 @@
 package com.logic.components;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -114,6 +108,7 @@ public class Custom extends SComponent {
 	 */
 	@Override
 	public void render(Graphics g, CircuitPanel cp) {
+		drawer.drawConnections(g);
 		for(int i = 0; i < io.getNumInputs(); i++) io.connectionAt(i, Connection.INPUT).renderLabel(g, inputs.get(i).getLabel());
 		for(int i = 0; i < io.getNumOutputs(); i++) io.connectionAt(i, Connection.OUTPUT).renderLabel(g, outputs.get(i).getLabel());
 		Rectangle bounds = getBounds();
@@ -121,11 +116,12 @@ public class Custom extends SComponent {
 		g2d.setColor(Color.WHITE);
 		g2d.fill(bounds);
 		g2d.setColor(Color.BLACK);
+		g2d.setStroke(new BasicStroke(4));
 		g2d.draw(bounds);
 		g2d.setColor(Color.BLUE);
-		if(selected) g2d.draw(bounds);
+		g2d.setStroke(new BasicStroke(2));
+		if(selected) g2d.drawRect(bounds.x - 1, bounds.y - 1, bounds.width + 2, bounds.height + 2);
 		drawLabel(g2d);
-		drawer.drawConnections(g);
 	}
 	
 	/**

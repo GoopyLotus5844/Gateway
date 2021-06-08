@@ -22,11 +22,16 @@ public class CustomHelper {
 	 * The space between each connection
 	 */
 	private final int connectionSpacing = 50;
+
+	/**
+	 * How far connections extend away from the component
+	 */
+	private final int connectionLength = 25;
 	
 	/**
 	 * The minimum size for the width or height of a component.
 	 */
-	private final int minSize = 7;
+	private final int minSize = 50;
 	
 	/**
 	 * The map of lights and switches from the CustomCreator
@@ -79,14 +84,14 @@ public class CustomHelper {
 		Point[] points = new Point[num];
 		int connectionSpace = num + (num - 1) * connectionSpacing;	
 		int pos;
-		if(sideNum == CompRotator.LEFT || sideNum == CompRotator.RIGHT) pos = ((height + 4) - connectionSpace) / 2;
-		else pos = ((width + 4) - connectionSpace) / 2;
+		if(sideNum == CompRotator.LEFT || sideNum == CompRotator.RIGHT) pos = ((height) - connectionSpace) / 2;
+		else pos = ((width) - connectionSpace) / 2;
 		
 		for(int i = 0; i < points.length; i++) {
-			if(sideNum == CompRotator.LEFT) points[i] = new Point(0, pos);
-			else if(sideNum == CompRotator.UP) points[i] = new Point(pos, 0);
-			else if(sideNum == CompRotator.DOWN) points[i] = new Point(pos, height + 3);
-			else if(sideNum == CompRotator.RIGHT) points[i] = new Point(width + 3, pos);
+			if(sideNum == CompRotator.LEFT) points[i] = new Point(-connectionLength, pos);
+			else if(sideNum == CompRotator.UP) points[i] = new Point(pos, -connectionLength);
+			else if(sideNum == CompRotator.DOWN) points[i] = new Point(pos, height + connectionLength);
+			else if(sideNum == CompRotator.RIGHT) points[i] = new Point(width + connectionLength, pos);
 			pos += connectionSpacing + 1;
 		}
 		return points;

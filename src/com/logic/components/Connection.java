@@ -157,16 +157,16 @@ public class Connection implements Deletable, Serializable {
 		int height = metrics.getHeight();
 		
 		Point center = null;
-		if(getAbsoluteDirection() == CompRotator.LEFT) center = new Point(coord.x - width / 2 - 10, coord.y - 3);
-		else if(getAbsoluteDirection() == CompRotator.UP) center = new Point(coord.x + 1, coord.y - height / 2 - 10);
-		else if(getAbsoluteDirection() == CompRotator.RIGHT) center = new Point(coord.x + width / 2 + 10, coord.y - 3);
-		else if(getAbsoluteDirection() == CompRotator.DOWN) center = new Point(coord.x, coord.y + height / 2 + 6);
+		if(getAbsoluteDirection() == CompRotator.LEFT) center = new Point(coord.x - width / 2 - 15, coord.y - 3);
+		else if(getAbsoluteDirection() == CompRotator.UP) center = new Point(coord.x + 1, coord.y - height / 2 - 15);
+		else if(getAbsoluteDirection() == CompRotator.RIGHT) center = new Point(coord.x + width / 2 + 15, coord.y - 3);
+		else if(getAbsoluteDirection() == CompRotator.DOWN) center = new Point(coord.x, coord.y + height / 2 + 15);
 		
 		g.setFont(labelFont);
 		g.setColor(Color.WHITE);
 		g.fillRect(center.x - width / 2 - 1, center.y - height / 2 + 3, width + 2, height);
 		g.setColor(Color.BLACK);
-		((Graphics2D) g).setStroke(new BasicStroke(2));
+		((Graphics2D) g).setStroke(new BasicStroke(1));
 		g.drawRect(center.x - width / 2 - 1, center.y - height / 2 + 3, width + 2, height);
 		g.drawString(label, center.x - width / 2, center.y + height / 2);
 	}
