@@ -199,33 +199,19 @@ public class IconLoader {
 	public BufferedImage advancedLoadImage(String file, int width, int height){
 		BufferedImage image = null;
 		try (ImageInputStream input = ImageIO.createImageInputStream(new File(file))) {
-			// Get the reader
 			Iterator<ImageReader> readers = ImageIO.getImageReaders(input);
-
 			if (!readers.hasNext()) {
 				throw new IllegalArgumentException("No reader for: " + file);
 			}
-
 			ImageReader reader = readers.next();
 
 			try {
 				reader.setInput(input);
-
 				ImageReadParam param = reader.getDefaultReadParam();
-
-				// Optionally, control read settings like sub sampling, source region or destination etc.
 				param.setSourceRenderSize(new Dimension(width, height));
-				// ...
-
-				// Finally read the image, using settings from param
 				image = reader.read(0, param);
-
-				// Optionally, read thumbnails, meta data, etc...
-				int numThumbs = reader.getNumThumbnails(0);
-				// ...
 			}
 			finally {
-				// Dispose reader in finally block to avoid memory leaks
 				reader.dispose();
 			}
 		} catch (IOException e) {
@@ -233,5 +219,4 @@ public class IconLoader {
 		}
 		return image;
 	}
-	//TODO remove unnecessary parts of this method
 }

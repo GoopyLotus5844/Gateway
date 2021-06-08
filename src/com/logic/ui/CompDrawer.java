@@ -5,15 +5,11 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.Serializable;
 
 import com.logic.components.*;
 import com.logic.input.Selection;
 import com.logic.main.LogicSimApp;
-import com.logic.test.And;
-import com.logic.test.AndOptimized;
-import com.logic.test.Or;
 
 /**
  * A class possessed by every LComponent that provides the code for drawing the component
