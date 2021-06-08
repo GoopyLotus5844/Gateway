@@ -15,6 +15,8 @@ import com.logic.ui.IconLoader;
  */
 public class LogicSimApp {
 
+	public static final boolean AA = true, SVG = true;
+
 	/**
 	 * OS type, used to determine if the look and feel should be switched from default java to windows
 	 */

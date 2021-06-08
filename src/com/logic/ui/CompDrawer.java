@@ -10,6 +10,7 @@ import java.io.Serializable;
 import com.logic.components.*;
 import com.logic.input.Selection;
 import com.logic.main.LogicSimApp;
+import org.apache.batik.gvt.GraphicsNode;
 
 /**
  * A class possessed by every LComponent that provides the code for drawing the component
@@ -107,7 +108,12 @@ public class CompDrawer implements Serializable {
 		}
 
 		//Render the body of the gate
-		g.drawImage(currentImage, x, y, width, height, null);
+		if(LogicSimApp.SVG) {
+			GraphicsNode svgIcon = LogicSimApp.iconLoader.logicSvgs[images[activeImageIndex]];
+			svgIcon.setTransform(new AffineTransform(80, 0, 0, 80, x, y));
+			svgIcon.paint(g2d);
+		}
+		else g.drawImage(currentImage, x, y, width, height, null);
 
 		//Render a dot to show if the gate is inverted
 		if(type == CompType.NOT || type == CompType.NAND || type == CompType.NOR || type == CompType.XNOR){

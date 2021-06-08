@@ -2,11 +2,19 @@ package com.logic.ui;
 
 import com.logic.components.*;
 import com.logic.components.Button;
+import com.logic.test.SvgRenderer;
+import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
+import org.apache.batik.bridge.*;
+import org.apache.batik.gvt.GraphicsNode;
+import org.apache.batik.util.XMLResourceDescriptor;
+import org.w3c.dom.svg.SVGDocument;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Iterator;
 
 import javax.imageio.ImageIO;
@@ -21,6 +29,8 @@ import javax.swing.ImageIcon;
  *
  */
 public class IconLoader {
+
+	public GraphicsNode svg;
 
 	/**
 	 * The number of logic icons
@@ -41,6 +51,8 @@ public class IconLoader {
 	 * The array of logic images
 	 */
 	public LogicImage[] logicImages;
+
+	public GraphicsNode[] logicSvgs;
 	
 	/**
 	 * The array of logic icons
@@ -60,6 +72,7 @@ public class IconLoader {
 		logicImages = new LogicImage[numLogicIcons];
 		logicIcons = new ImageIcon[numLogicIcons];
 		toolBarIcons = new ImageIcon[numToolBarIcons];
+		logicSvgs = new GraphicsNode[numLogicIcons];
 		makeImageIcons();
 	}
 	
@@ -100,6 +113,20 @@ public class IconLoader {
 		logicImages[11] = new LogicImage(advancedLoadImage("res/clock_off.svg", 240, 240));
 		logicImages[12] = new LogicImage(advancedLoadImage("res/clock_on.svg", 240, 240));
 
+		logicSvgs[0] = loadSvg("res/buffer.svg");
+		logicSvgs[1] = loadSvg("res/and.svg");
+		logicSvgs[2] = loadSvg("res/or.svg");
+		logicSvgs[3] = loadSvg("res/switch_off.svg");
+		logicSvgs[4] = loadSvg("res/switch_on.svg");
+		logicSvgs[5] = loadSvg("res/button_off.svg");
+		logicSvgs[6] = loadSvg("res/button_on.svg");
+		logicSvgs[7] = loadSvg("res/light_off.svg");
+		logicSvgs[8] = loadSvg("res/light_on.svg");
+		logicSvgs[9] = loadSvg("res/off_const.svg");
+		logicSvgs[10] = loadSvg("res/on_const.svg");
+		logicSvgs[11] = loadSvg("res/clock_off.svg");
+		logicSvgs[12] = loadSvg("res/clock_on.svg");
+
 		//logicIcons[0] = new ImageIcon(advancedLoadImage("res/buffer.svg", 55, 55));
 
 		BufferedImage[] toolBarImages = new BufferedImage[numToolBarIcons];
@@ -113,6 +140,8 @@ public class IconLoader {
 		toolBarIcons[3] = new ImageIcon(loadImage("/select.png"));
 		toolBarIcons[4] = new ImageIcon(loadImage("/pan.png"));
 		toolBarIcons[5] = new ImageIcon(loadImage("/insert.png"));
+
+		svg = SvgRenderer.getSvgIcon("res/or.svg");
 		//TODO remove unnecessary parts of this method
 	}
 
@@ -183,20 +212,40 @@ public class IconLoader {
 
 	private BufferedImage renderLogicIcon(LComponent model){
 		BufferedImage image = new BufferedImage(70, 70, BufferedImage.TYPE_INT_ARGB);
-		Graphics g = image.getGraphics();
+		Graphics2D g2d = (Graphics2D) image.getGraphics();
 		Rectangle bounds = model.getBounds();
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		float scale = Math.min((InsertPanel.BUTTON_SIZE - 2 * InsertPanel.IMAGE_PADDING) / (float) bounds.width,
 				(InsertPanel.BUTTON_SIZE - 2 * InsertPanel.IMAGE_PADDING) / (float) bounds.height);
-		((Graphics2D) g).scale(scale, scale);
-		g.translate((int) ((InsertPanel.BUTTON_SIZE - bounds.width * scale) / 2 / scale),
+		g2d.scale(scale, scale);
+		g2d.translate((int) ((InsertPanel.BUTTON_SIZE - bounds.width * scale) / 2 / scale),
 				(int) ((InsertPanel.BUTTON_SIZE - bounds.height * scale) / 2 / scale));
-		model.getDrawer().drawComponentBody(g);
-		g.dispose();
+		model.getDrawer().drawComponentBody(g2d);
+		g2d.dispose();
 		return image;
 		//TODO make the icons a little less rough around the edges?
 	}
 
-	public BufferedImage advancedLoadImage(String file, int width, int height){
+	private GraphicsNode loadSvg(String path){
+		GraphicsNode svgIcon = null;
+		try {
+			String xmlParser = XMLResourceDescriptor.getXMLParserClassName();
+			SAXSVGDocumentFactory df = new SAXSVGDocumentFactory(xmlParser);
+			SVGDocument doc = df.createSVGDocument(path);
+			UserAgent userAgent = new UserAgentAdapter();
+			DocumentLoader loader = new DocumentLoader(userAgent);
+			BridgeContext ctx = new org.apache.batik.bridge.BridgeContext(userAgent, loader);
+			ctx.setDynamicState(org.apache.batik.bridge.BridgeContext.DYNAMIC);
+			GVTBuilder builder = new org.apache.batik.bridge.GVTBuilder();
+			svgIcon = builder.build(ctx, doc);
+		} catch (Exception excp) {
+			svgIcon = null;
+			excp.printStackTrace();
+		}
+		return svgIcon;
+	}
+
+	private BufferedImage advancedLoadImage(String file, int width, int height){
 		BufferedImage image = null;
 		try (ImageInputStream input = ImageIO.createImageInputStream(new File(file))) {
 			Iterator<ImageReader> readers = ImageIO.getImageReaders(input);
