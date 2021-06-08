@@ -21,6 +21,16 @@ public class InsertPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 
 	/**
+	 * The size of the component buttons
+	 */
+	public static final int BUTTON_SIZE = 70;
+
+	/**
+	 * The size of the padding around the generated logic icons (used in IconLoader)
+	 */
+	public static final int IMAGE_PADDING = 15;
+
+	/**
 	 * The names of the components in the InsertPanel, which are used for showing tool tips and by the Inserter
 	 */
 	private String[] logicNames = new String[] {"Buffer", "Not", "And", "Nand", "Or", "Nor", "Xor", "Xnor", "Clock", "Light", "Switch", 

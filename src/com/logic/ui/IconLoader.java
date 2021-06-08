@@ -185,12 +185,14 @@ public class IconLoader {
 	private BufferedImage renderLogicIcon(LComponent model){
 		BufferedImage image = new BufferedImage(70, 70, BufferedImage.TYPE_INT_ARGB);
 		Graphics g = image.getGraphics();
-		((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g.setColor(new Color(0, 0, 0, 0));
-		g.fillRect(0, 0, image.getWidth(), image.getHeight());
-		((Graphics2D) g).scale(0.4, 0.4);
-		g.translate(45, 50);
-		model.getDrawer().draw(g);
+		//((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		Rectangle bounds = model.getBounds();
+		float scale = Math.min((InsertPanel.BUTTON_SIZE - 2 * InsertPanel.IMAGE_PADDING) / (float) bounds.width,
+				(InsertPanel.BUTTON_SIZE - 2 * InsertPanel.IMAGE_PADDING) / (float) bounds.height);
+		((Graphics2D) g).scale(scale, scale);
+		g.translate((int) ((InsertPanel.BUTTON_SIZE - bounds.width * scale) / 2 / scale),
+				(int) ((InsertPanel.BUTTON_SIZE - bounds.height * scale) / 2 / scale));
+		model.getDrawer().draw(false, g);
 		g.dispose();
 		return image;
 	}

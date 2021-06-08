@@ -74,37 +74,31 @@ public class CompDrawer implements Serializable {
 	public LogicImage getActiveImage() {
 		return LogicSimApp.iconLoader.logicImages[images[activeImageIndex]];
 	}
+
+	/**
+	 * Draws the LComponent with connections (see draw(boolean, Graphics))
+	 * @param g The graphics object to use for painting
+	 */
+	public void draw(Graphics g){
+		draw(true, g);
+	}
 	
 	/**
 	 * Draws the LComponent by displaying its image under the components current rotation and drawing a box around the component if it is
 	 * selected
+	 * @param drawConnections optionally draw connections or just the component body
 	 * @param g The Graphics object to use for painting
 	 */
-	public void draw(Graphics g) {
+	public void draw(boolean drawConnections, Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 		CompType type = lcomp.getType();
-		IOManager io = lcomp.getIO();
 		BufferedImage currentImage = getActiveImage().getBufferedImage(CompRotator.RIGHT);
 		int x = lcomp.getX(), y = lcomp.getY();
 		int width = currentImage.getWidth() / RENDER_SCALE, height = currentImage.getHeight() / RENDER_SCALE;
 		int rotation = lcomp.getRotator().getRotation();
 
-		//render connections with lines using manual rotation math
-		Point barStart = null, barStop = null;
-		for(int i = 0; i < io.getNumInputs(); i++) {
-			Point result = drawConnection(io.connectionAt(i, Connection.INPUT), g2d);
-			if(i == 0) barStart = result;
-			if(i == io.getNumInputs() - 1) barStop = result;
-		}
-		for(int i = 0; i < io.getNumOutputs(); i++) {
-			drawConnection(io.connectionAt(i, Connection.OUTPUT), g2d);
-		}
-
-		//render crossbar across the connections if there are more than 2 inputs
-		if(lcomp instanceof BasicGate && io.getNumInputs() > 2) {
-			g2d.setColor(Color.BLACK);
-			g2d.drawLine(barStart.x, barStart.y, barStop.x, barStop.y);
-		}
+		//Draw connections and connecting lines with manual rotation math
+		if(drawConnections) drawConnections(lcomp.getIO(), g2d);
 
 		//Rotate the graphics object so that the body of the component is always aligned with the upper right corner of its bounds rectangle
 		AffineTransform at = getTransform(rotation, x, y, width, height);
@@ -147,6 +141,28 @@ public class CompDrawer implements Serializable {
 			g2d.draw(lcomp.getBounds());
 		}
 		//TODO refactor this mess somehow idk
+	}
+
+	/**
+	 * Renders the connections of the component and the lines connecting them to the component, accounting for component rotation
+	 * @param io The IOManager of the component
+	 * @param g2d The Graphics2D object to use
+	 */
+	private void drawConnections(IOManager io, Graphics2D g2d){
+		Point barStart = null, barStop = null;
+		for(int i = 0; i < io.getNumInputs(); i++) {
+			Point result = drawConnection(io.connectionAt(i, Connection.INPUT), g2d);
+			if(i == 0) barStart = result;
+			if(i == io.getNumInputs() - 1) barStop = result;
+		}
+		for(int i = 0; i < io.getNumOutputs(); i++) {
+			drawConnection(io.connectionAt(i, Connection.OUTPUT), g2d);
+		}
+
+		if(lcomp instanceof BasicGate && io.getNumInputs() > 2) {
+			g2d.setColor(Color.BLACK);
+			g2d.drawLine(barStart.x, barStart.y, barStop.x, barStop.y);
+		}
 	}
 
 	/**
