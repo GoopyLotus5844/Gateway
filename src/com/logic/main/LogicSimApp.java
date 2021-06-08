@@ -35,6 +35,7 @@ public class LogicSimApp {
 	 */
 	public LogicSimApp() {
 		iconLoader = new IconLoader();
+		iconLoader.generateToolbarIcons();
 		windows = new ArrayList<Window>();
 		LogicFunctions.setFunctions();
 		newWindow(null);
