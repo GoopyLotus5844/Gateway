@@ -7,7 +7,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.Buffer;
 import java.util.Iterator;
 
 import javax.imageio.ImageIO;
@@ -68,7 +67,6 @@ public class IconLoader {
 	 * Loads all of the images that the program uses
 	 */
 	private void makeImageIcons() {
-
 		BufferedImage[] tempLogicImages = new BufferedImage[numLogicIcons];
 		tempLogicImages = readSheetSection(iconSheet, tempLogicImages, 0, 0, 5, 2, 7, 11, 10, 0);
 		tempLogicImages = readSheetSection(iconSheet, tempLogicImages, 22, 0, 3, 2, 7, 11, 6, 10);
@@ -115,6 +113,7 @@ public class IconLoader {
 		toolBarIcons[3] = new ImageIcon(loadImage("/select.png"));
 		toolBarIcons[4] = new ImageIcon(loadImage("/pan.png"));
 		toolBarIcons[5] = new ImageIcon(loadImage("/insert.png"));
+		//TODO remove unnecessary parts of this method
 	}
 
 	public void generateToolbarIcons(){
@@ -185,16 +184,16 @@ public class IconLoader {
 	private BufferedImage renderLogicIcon(LComponent model){
 		BufferedImage image = new BufferedImage(70, 70, BufferedImage.TYPE_INT_ARGB);
 		Graphics g = image.getGraphics();
-		//((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		Rectangle bounds = model.getBounds();
 		float scale = Math.min((InsertPanel.BUTTON_SIZE - 2 * InsertPanel.IMAGE_PADDING) / (float) bounds.width,
 				(InsertPanel.BUTTON_SIZE - 2 * InsertPanel.IMAGE_PADDING) / (float) bounds.height);
 		((Graphics2D) g).scale(scale, scale);
 		g.translate((int) ((InsertPanel.BUTTON_SIZE - bounds.width * scale) / 2 / scale),
 				(int) ((InsertPanel.BUTTON_SIZE - bounds.height * scale) / 2 / scale));
-		model.getDrawer().draw(false, g);
+		model.getDrawer().drawComponentBody(g);
 		g.dispose();
 		return image;
+		//TODO make the icons a little less rough around the edges?
 	}
 
 	public BufferedImage advancedLoadImage(String file, int width, int height){
@@ -234,4 +233,5 @@ public class IconLoader {
 		}
 		return image;
 	}
+	//TODO remove unnecessary parts of this method
 }

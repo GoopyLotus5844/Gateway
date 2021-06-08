@@ -76,29 +76,25 @@ public class CompDrawer implements Serializable {
 	}
 
 	/**
-	 * Draws the LComponent with connections (see draw(boolean, Graphics))
+	 * A convenience method that draws the connections and component body
 	 * @param g The graphics object to use for painting
 	 */
 	public void draw(Graphics g){
-		draw(true, g);
+		drawConnections(g);
+		drawComponentBody(g);
 	}
-	
+
 	/**
-	 * Draws the LComponent by displaying its image under the components current rotation and drawing a box around the component if it is
-	 * selected
-	 * @param drawConnections optionally draw connections or just the component body
-	 * @param g The Graphics object to use for painting
+	 * Draws the body of the component. This method requires the component to have an active image with a valid index.
+	 * @param g The graphics object to use
 	 */
-	public void draw(boolean drawConnections, Graphics g) {
+	public void drawComponentBody(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 		CompType type = lcomp.getType();
 		BufferedImage currentImage = getActiveImage().getBufferedImage(CompRotator.RIGHT);
 		int x = lcomp.getX(), y = lcomp.getY();
 		int width = currentImage.getWidth() / RENDER_SCALE, height = currentImage.getHeight() / RENDER_SCALE;
 		int rotation = lcomp.getRotator().getRotation();
-
-		//Draw connections and connecting lines with manual rotation math
-		if(drawConnections) drawConnections(lcomp.getIO(), g2d);
 
 		//Rotate the graphics object so that the body of the component is always aligned with the upper right corner of its bounds rectangle
 		AffineTransform at = getTransform(rotation, x, y, width, height);
@@ -144,11 +140,12 @@ public class CompDrawer implements Serializable {
 	}
 
 	/**
-	 * Renders the connections of the component and the lines connecting them to the component, accounting for component rotation
-	 * @param io The IOManager of the component
-	 * @param g2d The Graphics2D object to use
+	 * Draws the connections (with lines) for the component as specified by its IOManager
+	 * @param g The graphics object to use
 	 */
-	private void drawConnections(IOManager io, Graphics2D g2d){
+	public void drawConnections(Graphics g){
+		Graphics2D g2d = (Graphics2D) g;
+		IOManager io = lcomp.getIO();
 		Point barStart = null, barStop = null;
 		for(int i = 0; i < io.getNumInputs(); i++) {
 			Point result = drawConnection(io.connectionAt(i, Connection.INPUT), g2d);
@@ -199,6 +196,15 @@ public class CompDrawer implements Serializable {
 		return connectEnd;
 	}
 
+	/**
+	 * Calculates the transformation to be applied to the graphics object when rendering the body of the component
+	 * @param direction The direction the component is facing
+	 * @param x The x position of the component
+	 * @param y The y position of the component
+	 * @param width The width of the component body
+	 * @param height The height of the component body
+	 * @return The transformation
+	 */
 	private AffineTransform getTransform(int direction, int x, int y, int width, int height){
 		double theta = 0;
 		int tx = 0, ty = 0;

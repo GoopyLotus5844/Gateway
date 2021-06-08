@@ -19,9 +19,9 @@ import com.logic.ui.CompRotator;
 public class CustomHelper {
 	
 	/**
-	 * The space (in large pixels) between each connection. This number must be odd for spacing to work correctly.
+	 * The space between each connection
 	 */
-	private final int connectionSpacing = 3;
+	private final int connectionSpacing = 50;
 	
 	/**
 	 * The minimum size for the width or height of a component.
@@ -42,9 +42,8 @@ public class CustomHelper {
 	}
 	
 	/**
-	 * Chooses an appropriate width for the custom component in large pixels. This is done by taking the maximum between the width required
-	 * in order to fit the label and the width required to fit the number of connections. The width will always be chosen in such a way
-	 * that the connections can be evenly spaced and centered by the getConnectionPoints method.
+	 * Chooses an appropriate width for the custom component. This is done by taking the maximum between the width required
+	 * in order to fit the label and the width required to fit the number of connections.
 	 * @param label The label of the custom component
 	 * @param labelFont The font to be used for the label
 	 * @return The width of the Custom component
@@ -55,7 +54,6 @@ public class CustomHelper {
 		Rectangle2D bounds = labelFont.getStringBounds(label, frc);
 		int secondDimension = (int) (Math.floor(bounds.getWidth()) + 20);
 		//TODO fix the above line to use appropriate padding
-		if(secondDimension % 2 == 0) secondDimension++;
 		return Math.max(firstDimension, secondDimension);
 	}
 	
@@ -95,39 +93,14 @@ public class CustomHelper {
 	}
 	
 	/**
-	 * Returns the outer bounds of the body of the custom component
-	 * @param x The x location
-	 * @param y The y location
-	 * @param width The large pixel width
-	 * @param height The large pixel height
-	 * @return The outer bounds to render
-	 */
-	public static Rectangle getOuterRenderBounds(int x, int y, int width, int height) {
-		return new Rectangle(x, y, width, height);
-		//TODO remove this method and the following method
-	}
-	
-	/**
-	 * Returns the inner bounds of the body of the custom component
-	 * @param x The x location
-	 * @param y The y location
-	 * @param width The large pixel width
-	 * @param height The large pixel height
-	 * @return The inner bounds to render
-	 */
-	public static Rectangle getInnerRenderBounds(int x, int y, int width, int height) {
-		return new Rectangle(x, y, width, height);
-	}
-	
-	/**
 	 * Finds the large pixel dimension required in order to fit the given lists of components on the top/bottom or the left/right
 	 * @param one The first list of lights and switches (left or top)
 	 * @param two The second list of lights and switches (right or bottom)
 	 * @return The minimum dimension that fits the given inputs and outputs
 	 */
 	private int findDimension(LComponent[] one, LComponent[] two) {
-		int firstDimension = Math.max(minSize, 4 * countConnections(one) + 3);
-		int secondDimension = Math.max(minSize, 4 * countConnections(two) + 3);
+		int firstDimension = Math.max(minSize, connectionSpacing * countConnections(one) + 20);
+		int secondDimension = Math.max(minSize, connectionSpacing * countConnections(two) + 20);
 		return Math.max(firstDimension, secondDimension);
 	}
 	

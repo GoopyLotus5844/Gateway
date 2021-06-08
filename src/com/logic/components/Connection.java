@@ -1,11 +1,6 @@
 package com.logic.components;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -171,6 +166,7 @@ public class Connection implements Deletable, Serializable {
 		g.setColor(Color.WHITE);
 		g.fillRect(center.x - width / 2 - 1, center.y - height / 2 + 3, width + 2, height);
 		g.setColor(Color.BLACK);
+		((Graphics2D) g).setStroke(new BasicStroke(2));
 		g.drawRect(center.x - width / 2 - 1, center.y - height / 2 + 3, width + 2, height);
 		g.drawString(label, center.x - width / 2, center.y + height / 2);
 	}

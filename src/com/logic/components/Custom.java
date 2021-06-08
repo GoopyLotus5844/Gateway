@@ -110,27 +110,22 @@ public class Custom extends SComponent {
 	}
 
 	/**
-	 * Renders this component by drawing a Rectangle of the appropriate size and using drawConnection(...) to display connections
+	 * Renders this component by drawing a Rectangle of the appropriate size and using drawer.drawConnections to display connections
 	 */
 	@Override
 	public void render(Graphics g, CircuitPanel cp) {
-		for(int i = 0; i < io.getNumInputs(); i++) drawConnection(g, io.connectionAt(i, Connection.INPUT));
-		for(int i = 0; i < io.getNumOutputs(); i++) drawConnection(g, io.connectionAt(i, Connection.OUTPUT));
-		
-		int width = this.width, height = this.height;
-		if(rotator.getRotation() == CompRotator.UP || rotator.getRotation() == CompRotator.DOWN) {
-			width = this.height;
-			height = this.width;
-		}
-		
+		for(int i = 0; i < io.getNumInputs(); i++) io.connectionAt(i, Connection.INPUT).renderLabel(g, inputs.get(i).getLabel());
+		for(int i = 0; i < io.getNumOutputs(); i++) io.connectionAt(i, Connection.OUTPUT).renderLabel(g, outputs.get(i).getLabel());
+		Rectangle bounds = getBounds();
 		Graphics2D g2d = (Graphics2D) g;
-		g2d.setColor(Color.BLACK);
-		g2d.fill(CustomHelper.getOuterRenderBounds(x, y, width, height));
 		g2d.setColor(Color.WHITE);
-		g2d.fill(CustomHelper.getInnerRenderBounds(x, y, width, height));
+		g2d.fill(bounds);
+		g2d.setColor(Color.BLACK);
+		g2d.draw(bounds);
 		g2d.setColor(Color.BLUE);
-		if(selected) ((Graphics2D) g).draw(getBounds());
+		if(selected) g2d.draw(bounds);
 		drawLabel(g2d);
+		drawer.drawConnections(g);
 	}
 	
 	/**
@@ -211,18 +206,6 @@ public class Custom extends SComponent {
 		
 		g2d.drawString(label, (bounds.width - stringWidth) / 2 + x, (bounds.height - stringHeight + 25) / 2 + y);
 		g2d.setTransform(orig);
-	}
-
-	/**
-	 * Draws the given connection (because custom components do not have logic images to show connections on their own). Connections
-	 * are drawn using using LogicSimApp.iconLoader.logicImages[46];
-	 * @param g The Graphics object to use
-	 * @param c The Connection to draw
-	 */
-	private void drawConnection(Graphics g, Connection c) {
-		GraphicsUtils.drawConnection(g, c, x, y, rotator.getRotation());
-		if(c.getType() == Connection.INPUT) c.renderLabel(g, inputs.get(c.getIndex()).getLabel());
-		else c.renderLabel(g, outputs.get(c.getIndex()).getLabel());
 	}
 
 	/**
