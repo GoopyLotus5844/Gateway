@@ -1,5 +1,6 @@
 package com.logic.main;
 
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 import com.logic.engine.LogicFunctions;
+import com.logic.ui.FontLoader;
 import com.logic.ui.IconLoader;
 
 /**
@@ -29,6 +31,11 @@ public class LogicSimApp {
 	 * The IconLoader for the program, which is responsible for loading and holding all of the images that the program uses
 	 */
 	public static IconLoader iconLoader;
+
+	/**
+	 * Loads and stores fonts (there is currently only 1 for the seven segment display)
+	 */
+	public static FontLoader fontLoader;
 	
 	/**
 	 * The list of all currently open windows, used for closing the application when there are none left
@@ -41,6 +48,7 @@ public class LogicSimApp {
 	public LogicSimApp() {
 		iconLoader = new IconLoader();
 		iconLoader.generateToolbarIcons();
+		fontLoader = new FontLoader();
 		windows = new ArrayList<Window>();
 		LogicFunctions.setFunctions();
 		newWindow(null);

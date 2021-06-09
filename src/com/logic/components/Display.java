@@ -1,10 +1,15 @@
 package com.logic.components;
 
-import java.awt.Graphics;
+import java.awt.*;
+import java.text.AttributedCharacterIterator;
+import java.util.Map;
 
 import com.logic.engine.LogicEngine;
+import com.logic.input.Selection;
+import com.logic.main.LogicSimApp;
 import com.logic.ui.CircuitPanel;
 import com.logic.ui.CompRotator;
+import org.apache.commons.logging.Log;
 
 /**
  * A digit display component that shows a decimal value based on four bits of input
@@ -14,24 +19,24 @@ import com.logic.ui.CompRotator;
 public class Display extends LComponent {
 	
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Letters used to represent values greater than 9
+	 */
+	private final String[] letters = new String[] {"A", "b", "C", "d", "E", "F"};
 	
 	/**
 	 * Constructs a new Display
-	 * @param cp The CircuitPanel instance being used
 	 * @param x The x position of the display
 	 * @param y The y position of the display
 	 */
 	public Display(int x, int y) {
 		super(x, y, CompType.DISPLAY);
-		int[] images = new int[16];
-		for(int i = 0; i < images.length; i++) {
-			images[i] = i + 30;
-		}
-		drawer.setImages(images);
-		io.addConnection(0, 0, Connection.INPUT, CompRotator.LEFT);
-		io.addConnection(0, 3, Connection.INPUT, CompRotator.LEFT);
-		io.addConnection(0, 7, Connection.INPUT, CompRotator.LEFT);
-		io.addConnection(0, 10, Connection.INPUT, CompRotator.LEFT);
+		drawer.setImages(new int[] {13});
+		io.addConnection(-20, 2, Connection.INPUT, CompRotator.LEFT);
+		io.addConnection(-20, 34, Connection.INPUT, CompRotator.LEFT);
+		io.addConnection(-20, 66, Connection.INPUT, CompRotator.LEFT);
+		io.addConnection(-20, 98, Connection.INPUT, CompRotator.LEFT);
 	}
 	
 	@Override
@@ -40,8 +45,14 @@ public class Display extends LComponent {
 	@Override
 	public void render(Graphics g, CircuitPanel cp) {
 		int val = calcValue(io.getInput(0), io.getInput(1), io.getInput(2), io.getInput(3));
-		drawer.setActiveImageIndex(val);
+		String str;
+		if(val < 10) str = Integer.toString(val);
+		else str = letters[val - 10];
+
 		drawer.draw(g);
+		g.setFont(LogicSimApp.fontLoader.sevenSegFont.deriveFont(70f));
+		g.setColor(Selection.SELECT_COLOR);
+		g.drawString(str, x + 22, y + 85);
 	}
 	
 	/**

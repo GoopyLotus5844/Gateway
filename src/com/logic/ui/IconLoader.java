@@ -91,6 +91,7 @@ public class IconLoader {
 		logicImages[10] = new LogicImage(imageFromSVG("res/on_const.svg", 180, 240));
 		logicImages[11] = new LogicImage(imageFromSVG("res/clock_off.svg", 240, 240));
 		logicImages[12] = new LogicImage(imageFromSVG("res/clock_on.svg", 240, 240));
+		logicImages[13] = new LogicImage(imageFromSVG("res/display.svg", 300, 300));
 
 		logicSVGs[0] = loadSvg("res/buffer.svg");
 		logicSVGs[1] = loadSvg("res/and.svg");
@@ -105,6 +106,7 @@ public class IconLoader {
 		logicSVGs[10] = loadSvg("res/on_const.svg");
 		logicSVGs[11] = loadSvg("res/clock_off.svg");
 		logicSVGs[12] = loadSvg("res/clock_on.svg");
+		logicSVGs[13] = loadSvg("res/display.svg");
 
 		BufferedImage[] toolBarImages = readSheetSection(iconSheet, new BufferedImage[numToolBarIcons], 0, 57, 2, 8, 13, 13, 15, 0);
 		for(int i = 0; i < toolBarImages.length; i++) {
@@ -134,6 +136,7 @@ public class IconLoader {
 		logicIcons[26] = new ImageIcon(renderLogicIcon(new Constant(0, 0, CompType.ZERO)));
 		logicIcons[27] = new ImageIcon(renderLogicIcon(new Constant(0, 0, CompType.ONE)));
 		logicIcons[28] = new ImageIcon(renderLogicIcon(new Button(0, 0)));
+		logicIcons[30] = new ImageIcon(renderLogicIcon(new Display(0, 0)));
 	}
 	
 	/**
