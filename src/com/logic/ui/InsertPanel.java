@@ -28,7 +28,7 @@ public class InsertPanel extends JPanel implements ActionListener {
 	/**
 	 * The size of the padding around the generated logic icons (used in IconLoader)
 	 */
-	public static final int IMAGE_PADDING = 15;
+	public static final int IMAGE_PADDING = 18;
 
 	/**
 	 * The names of the components in the InsertPanel, which are used for showing tool tips and by the Inserter

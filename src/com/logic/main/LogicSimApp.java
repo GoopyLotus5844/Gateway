@@ -46,9 +46,9 @@ public class LogicSimApp {
 	 * Starts the program 
 	 */
 	public LogicSimApp() {
+		fontLoader = new FontLoader();
 		iconLoader = new IconLoader();
 		iconLoader.generateToolbarIcons();
-		fontLoader = new FontLoader();
 		windows = new ArrayList<Window>();
 		LogicFunctions.setFunctions();
 		newWindow(null);

@@ -189,7 +189,7 @@ public class IconLoader {
 		g2d.translate((int) ((InsertPanel.BUTTON_SIZE - bounds.width * scale) / 2 / scale),
 				(int) ((InsertPanel.BUTTON_SIZE - bounds.height * scale) / 2 / scale));
 		model.getDrawer().setUseSVG(true);
-		model.getDrawer().drawComponentBody(g2d);
+		model.render(g2d, null);
 		g2d.dispose();
 		return image;
 	}
