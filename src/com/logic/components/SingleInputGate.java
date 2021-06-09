@@ -1,6 +1,6 @@
 package com.logic.components;
 
-import java.awt.Graphics;
+import java.awt.*;
 
 import com.logic.engine.LogicEngine;
 import com.logic.engine.LogicFunctions;
@@ -44,7 +44,9 @@ public class SingleInputGate extends LComponent {
 
 	@Override
 	public void render(Graphics g, CircuitPanel cp) {
+		Graphics2D g2d = (Graphics2D) g;
 		drawer.draw(g);
+		if(type == CompType.NOT) drawer.drawInverted(g2d);
 	}
 	
 	@Override

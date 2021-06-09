@@ -1,7 +1,6 @@
 package com.logic.components;
 
-import java.awt.Graphics;
-import java.awt.Point;
+import java.awt.*;
 
 import com.logic.engine.LogicEngine;
 import com.logic.engine.LogicFunctions;
@@ -96,7 +95,10 @@ public class BasicGate extends LComponent {
 	                      
 	@Override
 	public void render(Graphics g, CircuitPanel cp) {
+		Graphics2D g2d = (Graphics2D) g;
 		drawer.draw(g);
+		if(type == CompType.XOR || type == CompType.XNOR) drawer.drawExclusive(g2d);
+		if(type == CompType.NAND || type == CompType.NOR || type == CompType.XNOR) drawer.drawInverted(g2d);
 	}
 
 	@Override

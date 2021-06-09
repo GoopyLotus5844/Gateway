@@ -53,6 +53,16 @@ public class CompDrawer implements Serializable {
 	 * The LComponent that uses this CompDrawer
 	 */
 	private LComponent lcomp;
+
+	/**
+	 * The last recorded position and rotation values, used to determine if the rotation transform needs to be recalculated
+	 */
+	private int prevX, prevY, prevRotation;
+
+	/**
+	 * The most recently computed graphics transformation
+	 */
+	private AffineTransform at;
 	
 	/**
 	 * Constructs a new CompDrawer
@@ -102,63 +112,28 @@ public class CompDrawer implements Serializable {
 	 */
 	public void drawComponentBody(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
-		CompType type = lcomp.getType();
 		BufferedImage currentImage = getActiveImage().getBufferedImage(CompRotator.RIGHT);
-		int x = lcomp.getX(), y = lcomp.getY();
-		int width = currentImage.getWidth() / RENDER_SCALE, height = currentImage.getHeight() / RENDER_SCALE;
-		int rotation = lcomp.getRotator().getRotation();
+		Rectangle b = lcomp.getBoundsRight();
 
-		//Rotate the graphics object so that the body of the component is always aligned with the upper right corner of its bounds rectangle
-		AffineTransform at = getTransform(rotation, x, y, width, height);
-		g2d.transform(at);
-
-		//Render curved bar for XOR and XNOR
-		if(type == CompType.XOR || type == CompType.XNOR) {
-			GeneralPath shape = new GeneralPath();
-			shape.moveTo(x - 8, y + 3);
-			shape.curveTo(x + 5, y + 30, x + 5, y + 50, x - 8, y + 77);
-			g2d.setColor(Color.BLACK);
-			g2d.setStroke(new BasicStroke(4, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-			g2d.draw(shape);
-		}
-
-		//Render the body of the gate
+		applyTransform(lcomp.getRotator().getRotation(), b.x, b.y, b.width, b.height, g2d);
 		if(useSVG) {
 			GraphicsNode svgIcon = getActiveSVG();
-			int size = Math.max(width, height);
-			float difference = Math.abs(width - height);
-			if(width <= height)
-				svgIcon.setTransform(new AffineTransform(size, 0, 0, size, x - difference / 2, y));
+			int size = Math.max(b.width, b.height);
+			float difference = Math.abs(b.width - b.height);
+			if(b.width <= b.height)
+				svgIcon.setTransform(new AffineTransform(size, 0, 0, size, b.x - difference / 2, b.y));
 			else
-				svgIcon.setTransform(new AffineTransform(size, 0, 0, size, x, y - difference / 2));
+				svgIcon.setTransform(new AffineTransform(size, 0, 0, size, b.x, b.y - difference / 2));
 			svgIcon.paint(g2d);
 		}
-		else g.drawImage(currentImage, x, y, width, height, null);
+		else g.drawImage(currentImage, b.x, b.y, b.width, b.height, null);
+		reverseTransform(g2d);
 
-		//Render a dot to show if the gate is inverted
-		if(type == CompType.NOT || type == CompType.NAND || type == CompType.NOR || type == CompType.XNOR){
-			g2d.setStroke(new BasicStroke(2));
-			g2d.setColor(Color.WHITE);
-			g2d.fillOval(x + 75, y + 33, 14, 14);
-			g2d.setColor(Color.BLACK);
-			g2d.drawOval(x + 75, y + 33, 15, 15);
-		}
-
-		//Undo the graphics transformation
-		try {
-			at.invert();
-			g2d.transform(at);
-		} catch (NoninvertibleTransformException e) {
-			e.printStackTrace();
-		}
-
-		//Render a blue box around the body of the component if it is selected
 		if(lcomp.isSelected()) {
 			g.setColor(Selection.SELECT_COLOR);
 			g2d.setStroke(new BasicStroke(2));
 			g2d.draw(lcomp.getBounds());
 		}
-		//TODO refactor this mess somehow idk
 	}
 
 	/**
@@ -219,27 +194,60 @@ public class CompDrawer implements Serializable {
 	}
 
 	/**
+	 * Draws a curved line to show that a gate is an XOR or an XNOR
+	 * @param g2d The Graphics2D object to use
+	 */
+	public void drawExclusive(Graphics2D g2d){
+		Rectangle b = lcomp.getBoundsRight();
+		applyTransform(lcomp.getRotator().getRotation(), b.x, b.y, b.width, b.height, g2d);
+
+		GeneralPath shape = new GeneralPath();
+		shape.moveTo(b.x - 8, b.y + 3);
+		shape.curveTo(b.x + 5, b.y + 30, b.x + 5, b.y + 50, b.x - 8, b.y + 77);
+		g2d.setColor(Color.BLACK);
+		g2d.setStroke(new BasicStroke(4, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+		g2d.draw(shape);
+		reverseTransform(g2d);
+	}
+
+	/**
+	 * Draws a dot to indicate that the gate is a "not" variant
+	 * @param g2d The Graphics2D object to use
+	 */
+	public void drawInverted(Graphics2D g2d){
+		Rectangle b = lcomp.getBoundsRight();
+		applyTransform(lcomp.getRotator().getRotation(), b.x, b.y, b.width, b.height, g2d);
+
+		g2d.setStroke(new BasicStroke(2));
+		g2d.setColor(Color.WHITE);
+		g2d.fillOval(b.x + 75, b.y + 33, 14, 14);
+		g2d.setColor(Color.BLACK);
+		g2d.drawOval(b.x + 75, b.y + 33, 15, 15);
+		reverseTransform(g2d);
+	}
+
+	/**
 	 * Calculates the transformation to be applied to the graphics object when rendering the body of the component
-	 * @param direction The direction the component is facing
+	 * @param rotation The direction the component is facing
 	 * @param x The x position of the component
 	 * @param y The y position of the component
 	 * @param width The width of the component body
 	 * @param height The height of the component body
 	 * @return The transformation
 	 */
-	private AffineTransform getTransform(int direction, int x, int y, int width, int height){
+	private AffineTransform getTransform(int rotation, int x, int y, int width, int height){
 		double theta = 0;
 		int tx = 0, ty = 0;
-		if(direction == CompRotator.UP) {
+		if(rotation == CompRotator.UP) {
 			theta = -Math.PI / 2;
 			tx = -width;
 		}
-		else if(direction == CompRotator.LEFT) {
+		else if(rotation == CompRotator.LEFT) {
 			theta = Math.PI;
 			tx = -width;
 			ty = -height;
 		}
-		else if(direction == CompRotator.DOWN) {
+		else if(rotation == CompRotator.DOWN) {
 			theta = Math.PI / 2;
 			ty = -height;
 		}
@@ -247,6 +255,39 @@ public class CompDrawer implements Serializable {
 		at.rotate(theta, x, y);
 		at.translate(tx, ty);
 		return at;
+	}
+
+	/**
+	 * Applies the graphics transformation needed for the component to appear correctly when rotated. If the position and rotation have
+	 * changed since this method was last called, a new AffineTransform is computed, otherwise the old one is used. Used for all rendering
+	 * besides drawing connections.
+	 * @param rotation The current direction the component is facing
+	 * @param x The x position
+	 * @param y The y position
+	 * @param width The width of the component (right facing)
+	 * @param height The height of the component (right facing)
+	 * @param g The Graphics2D object
+	 */
+	private void applyTransform(int rotation, int x, int y, int width, int height, Graphics2D g){
+		if(x != prevX || y != prevY || rotation != prevRotation || at == null){
+			prevX = x;
+			prevY = y;
+			prevRotation = rotation;
+			at = getTransform(rotation, x, y, width, height);
+		}
+		g.transform(at);
+	}
+
+	/**
+	 * Applies the current AffineTransform in reverse.  This method will not recompute the transform even if values have changed.
+	 * @param g The Graphics2D object
+	 */
+	private void reverseTransform(Graphics2D g){
+		try {
+			g.transform(at.createInverse());
+		} catch (NoninvertibleTransformException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
