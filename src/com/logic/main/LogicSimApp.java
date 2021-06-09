@@ -15,7 +15,10 @@ import com.logic.ui.IconLoader;
  */
 public class LogicSimApp {
 
-	public static final boolean AA = true, SVG = true;
+	/**
+	 * Optionally use AA for all rendering done in circuit panel. Noticeably improvement in quality but laggy on large circuits.
+	 */
+	public static final boolean AA = false;
 
 	/**
 	 * OS type, used to determine if the look and feel should be switched from default java to windows

@@ -34,7 +34,9 @@ public class InsertPanel extends JPanel implements ActionListener {
 	 * The names of the components in the InsertPanel, which are used for showing tool tips and by the Inserter
 	 */
 	private String[] logicNames = new String[] {"Buffer", "Not", "And", "Nand", "Or", "Nor", "Xor", "Xnor", "Clock", "Light", "Switch", 
-			"Zero", "One", "Button", "Display"};
+			"Zero", "One", "Button"};
+	//TODO re-enable display component by adding "Display" to the array
+
 	/**
 	 * The values by which to scale each logic image, in the same order as the array of logic names
 	 */

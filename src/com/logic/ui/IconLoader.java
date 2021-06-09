@@ -2,7 +2,6 @@ package com.logic.ui;
 
 import com.logic.components.*;
 import com.logic.components.Button;
-import com.logic.test.SvgRenderer;
 import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
 import org.apache.batik.bridge.*;
 import org.apache.batik.gvt.GraphicsNode;
@@ -13,8 +12,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Iterator;
 
 import javax.imageio.ImageIO;
@@ -29,8 +26,6 @@ import javax.swing.ImageIcon;
  *
  */
 public class IconLoader {
-
-	public GraphicsNode svg;
 
 	/**
 	 * The number of logic icons
@@ -52,7 +47,10 @@ public class IconLoader {
 	 */
 	public LogicImage[] logicImages;
 
-	public GraphicsNode[] logicSvgs;
+	/**
+	 * The array of logic SVGs
+	 */
+	public GraphicsNode[] logicSVGs;
 	
 	/**
 	 * The array of logic icons
@@ -72,65 +70,43 @@ public class IconLoader {
 		logicImages = new LogicImage[numLogicIcons];
 		logicIcons = new ImageIcon[numLogicIcons];
 		toolBarIcons = new ImageIcon[numToolBarIcons];
-		logicSvgs = new GraphicsNode[numLogicIcons];
+		logicSVGs = new GraphicsNode[numLogicIcons];
 		makeImageIcons();
 	}
 	
 	/**
-	 * Loads all of the images that the program uses
+	 * Loads all the BufferedImages and SVG GraphicsNode objects that the program uses
 	 */
 	private void makeImageIcons() {
-		BufferedImage[] tempLogicImages = new BufferedImage[numLogicIcons];
-		tempLogicImages = readSheetSection(iconSheet, tempLogicImages, 0, 0, 5, 2, 7, 11, 10, 0);
-		tempLogicImages = readSheetSection(iconSheet, tempLogicImages, 22, 0, 3, 2, 7, 11, 6, 10);
-		tempLogicImages = readSheetSection(iconSheet, tempLogicImages, 44, 0, 3, 2, 11, 11, 6, 16);
-		tempLogicImages = readSheetSection(iconSheet, tempLogicImages, 66, 0, 1, 2, 11, 7, 2, 22);
-		tempLogicImages = readSheetSection(iconSheet, tempLogicImages, 80, 0, 2, 2, 9, 9, 4, 24);
-		tempLogicImages = readSheetSection(iconSheet, tempLogicImages, 98, 0, 1, 2, 11, 9, 2, 28);
-		tempLogicImages = readSheetSection(iconSheet, tempLogicImages, 0, 35, 2, 8, 11, 17, 16, 30);
-		tempLogicImages[46] = iconSheet.getSubimage(116, 0, 2, 1);
-		
-		for(int i = 0; i < tempLogicImages.length; i++) {
-			logicIcons[i] = new ImageIcon(tempLogicImages[i]);
-		}
+		logicImages[0] = new LogicImage(imageFromSVG("res/buffer.svg", 240, 240));
+		logicImages[1] = new LogicImage(imageFromSVG("res/and.svg", 240, 240));
+		logicImages[2] = new LogicImage(imageFromSVG("res/or.svg", 240, 240));
+		logicImages[3] = new LogicImage(imageFromSVG("res/switch_off.svg", 180, 240));
+		logicImages[4] = new LogicImage(imageFromSVG("res/switch_on.svg", 180, 240));
+		logicImages[5] = new LogicImage(imageFromSVG("res/button_off.svg", 240, 240));
+		logicImages[6] = new LogicImage(imageFromSVG("res/button_on.svg", 240, 240));
+		logicImages[7] = new LogicImage(imageFromSVG("res/light_off.svg", 180, 240));
+		logicImages[8] = new LogicImage(imageFromSVG("res/light_on.svg", 180, 240));
+		logicImages[9] = new LogicImage(imageFromSVG("res/off_const.svg", 180, 240));
+		logicImages[10] = new LogicImage(imageFromSVG("res/on_const.svg", 180, 240));
+		logicImages[11] = new LogicImage(imageFromSVG("res/clock_off.svg", 240, 240));
+		logicImages[12] = new LogicImage(imageFromSVG("res/clock_on.svg", 240, 240));
 
-		logicImages[0] = new LogicImage(advancedLoadImage("res/buffer.svg", 240, 240));
-		logicImages[1] = new LogicImage(advancedLoadImage("res/and.svg", 240, 240));
-		logicImages[2] = new LogicImage(advancedLoadImage("res/or.svg", 240, 240));
+		logicSVGs[0] = loadSvg("res/buffer.svg");
+		logicSVGs[1] = loadSvg("res/and.svg");
+		logicSVGs[2] = loadSvg("res/or.svg");
+		logicSVGs[3] = loadSvg("res/switch_off.svg");
+		logicSVGs[4] = loadSvg("res/switch_on.svg");
+		logicSVGs[5] = loadSvg("res/button_off.svg");
+		logicSVGs[6] = loadSvg("res/button_on.svg");
+		logicSVGs[7] = loadSvg("res/light_off.svg");
+		logicSVGs[8] = loadSvg("res/light_on.svg");
+		logicSVGs[9] = loadSvg("res/off_const.svg");
+		logicSVGs[10] = loadSvg("res/on_const.svg");
+		logicSVGs[11] = loadSvg("res/clock_off.svg");
+		logicSVGs[12] = loadSvg("res/clock_on.svg");
 
-		logicImages[3] = new LogicImage(advancedLoadImage("res/switch_off.svg", 180, 240));
-		logicImages[4] = new LogicImage(advancedLoadImage("res/switch_on.svg", 180, 240));
-
-		logicImages[5] = new LogicImage(advancedLoadImage("res/button_off.svg", 240, 240));
-		logicImages[6] = new LogicImage(advancedLoadImage("res/button_on.svg", 240, 240));
-
-		logicImages[7] = new LogicImage(advancedLoadImage("res/light_off.svg", 180, 240));
-		logicImages[8] = new LogicImage(advancedLoadImage("res/light_on.svg", 180, 240));
-
-		logicImages[9] = new LogicImage(advancedLoadImage("res/off_const.svg", 180, 240));
-		logicImages[10] = new LogicImage(advancedLoadImage("res/on_const.svg", 180, 240));
-
-		logicImages[11] = new LogicImage(advancedLoadImage("res/clock_off.svg", 240, 240));
-		logicImages[12] = new LogicImage(advancedLoadImage("res/clock_on.svg", 240, 240));
-
-		logicSvgs[0] = loadSvg("res/buffer.svg");
-		logicSvgs[1] = loadSvg("res/and.svg");
-		logicSvgs[2] = loadSvg("res/or.svg");
-		logicSvgs[3] = loadSvg("res/switch_off.svg");
-		logicSvgs[4] = loadSvg("res/switch_on.svg");
-		logicSvgs[5] = loadSvg("res/button_off.svg");
-		logicSvgs[6] = loadSvg("res/button_on.svg");
-		logicSvgs[7] = loadSvg("res/light_off.svg");
-		logicSvgs[8] = loadSvg("res/light_on.svg");
-		logicSvgs[9] = loadSvg("res/off_const.svg");
-		logicSvgs[10] = loadSvg("res/on_const.svg");
-		logicSvgs[11] = loadSvg("res/clock_off.svg");
-		logicSvgs[12] = loadSvg("res/clock_on.svg");
-
-		//logicIcons[0] = new ImageIcon(advancedLoadImage("res/buffer.svg", 55, 55));
-
-		BufferedImage[] toolBarImages = new BufferedImage[numToolBarIcons];
-		toolBarImages = readSheetSection(iconSheet, toolBarImages, 0, 57, 2, 8, 13, 13, 15, 0);
+		BufferedImage[] toolBarImages = readSheetSection(iconSheet, new BufferedImage[numToolBarIcons], 0, 57, 2, 8, 13, 13, 15, 0);
 		for(int i = 0; i < toolBarImages.length; i++) {
 			toolBarIcons[i] = new ImageIcon(toolBarImages[i]);
 		}
@@ -140,8 +116,6 @@ public class IconLoader {
 		toolBarIcons[3] = new ImageIcon(loadImage("/select.png"));
 		toolBarIcons[4] = new ImageIcon(loadImage("/pan.png"));
 		toolBarIcons[5] = new ImageIcon(loadImage("/insert.png"));
-
-		svg = SvgRenderer.getSvgIcon("res/or.svg");
 		//TODO remove unnecessary parts of this method
 	}
 
@@ -195,21 +169,12 @@ public class IconLoader {
 	public static ImageIcon getScaledImage(ImageIcon image, int newWidth, int newHeight) {
 		return new ImageIcon(image.getImage().getScaledInstance(newWidth, newHeight, Image.SCALE_DEFAULT));
 	}
-	
-	/**
-	 * Loads an image from the specified file
-	 * @param path The file path to load the image from
-	 * @return The BufferedImage
-	 */
-	public BufferedImage loadImage(String path){
-		try {
-			return ImageIO.read(getClass().getResource(path));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
 
+	/**
+	 * Renders the icons for each gate using CompDrawer drawing code set to SVG mode. Does not include connections.
+	 * @param model The LComponent that will be rendered to the image (should be placed at 0, 0)
+	 * @return The icon based on the given LComponent
+	 */
 	private BufferedImage renderLogicIcon(LComponent model){
 		BufferedImage image = new BufferedImage(70, 70, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2d = (Graphics2D) image.getGraphics();
@@ -220,12 +185,17 @@ public class IconLoader {
 		g2d.scale(scale, scale);
 		g2d.translate((int) ((InsertPanel.BUTTON_SIZE - bounds.width * scale) / 2 / scale),
 				(int) ((InsertPanel.BUTTON_SIZE - bounds.height * scale) / 2 / scale));
+		model.getDrawer().setUseSVG(true);
 		model.getDrawer().drawComponentBody(g2d);
 		g2d.dispose();
 		return image;
-		//TODO make the icons a little less rough around the edges?
 	}
 
+	/**
+	 * Loads the given SVG file as a GraphicsNode so that it can then be rendered at any resolution
+	 * @param path The path to the SVG
+	 * @return The GraphicsNode object
+	 */
 	private GraphicsNode loadSvg(String path){
 		GraphicsNode svgIcon = null;
 		try {
@@ -245,7 +215,28 @@ public class IconLoader {
 		return svgIcon;
 	}
 
-	private BufferedImage advancedLoadImage(String file, int width, int height){
+	/**
+	 * Loads an image from the specified file
+	 * @param path The file path to load the image from
+	 * @return The BufferedImage
+	 */
+	public BufferedImage loadImage(String path){
+		try {
+			return ImageIO.read(getClass().getResource(path));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
+	 * An easy way to get a BufferedImage directly from an SVG file using the twelvemonkeys ImageIO plugin
+	 * @param file The SVG file to read from
+	 * @param width The width of the new BufferedImage
+	 * @param height The height of the new BufferedImage
+	 * @return The image
+	 */
+	private BufferedImage imageFromSVG(String file, int width, int height){
 		BufferedImage image = null;
 		try (ImageInputStream input = ImageIO.createImageInputStream(new File(file))) {
 			Iterator<ImageReader> readers = ImageIO.getImageReaders(input);

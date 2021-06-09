@@ -10,6 +10,7 @@ import java.io.Serializable;
 import com.logic.components.*;
 import com.logic.input.Selection;
 import com.logic.main.LogicSimApp;
+import org.apache.batik.ext.awt.image.renderable.AffineRable;
 import org.apache.batik.gvt.GraphicsNode;
 
 /**
@@ -33,6 +34,11 @@ public class CompDrawer implements Serializable {
 	public static final int BASIC_INPUT_SPACING = 50;
 
 	/**
+	 * Choose between using SVG GraphicsNodes and pre-rendered high resolution BufferedImages for component drawing
+	 */
+	private boolean useSVG;
+
+	/**
 	 * The indexes of the images that this component uses (in the IconLoader)
 	 */
 	private int[] images;
@@ -54,6 +60,7 @@ public class CompDrawer implements Serializable {
 	 */
 	public CompDrawer(LComponent lcomp) {
 		this.lcomp = lcomp;
+		useSVG = false;
 	}
 	
 	/**
@@ -70,6 +77,14 @@ public class CompDrawer implements Serializable {
 	 */
 	public LogicImage getActiveImage() {
 		return LogicSimApp.iconLoader.logicImages[images[activeImageIndex]];
+	}
+
+	/**
+	 * Returns the active image (as an SVG) as specified by activeImageIndex
+	 * @return The active SVG image
+	 */
+	public GraphicsNode getActiveSVG(){
+		return LogicSimApp.iconLoader.logicSVGs[images[activeImageIndex]];
 	}
 
 	/**
@@ -108,9 +123,14 @@ public class CompDrawer implements Serializable {
 		}
 
 		//Render the body of the gate
-		if(LogicSimApp.SVG) {
-			GraphicsNode svgIcon = LogicSimApp.iconLoader.logicSvgs[images[activeImageIndex]];
-			svgIcon.setTransform(new AffineTransform(80, 0, 0, 80, x, y));
+		if(useSVG) {
+			GraphicsNode svgIcon = getActiveSVG();
+			int size = Math.max(width, height);
+			float difference = Math.abs(width - height);
+			if(width <= height)
+				svgIcon.setTransform(new AffineTransform(size, 0, 0, size, x - difference / 2, y));
+			else
+				svgIcon.setTransform(new AffineTransform(size, 0, 0, size, x, y - difference / 2));
 			svgIcon.paint(g2d);
 		}
 		else g.drawImage(currentImage, x, y, width, height, null);
@@ -237,5 +257,14 @@ public class CompDrawer implements Serializable {
 	 */
 	public void setImages(int[] images) {
 		this.images = images;
+	}
+
+	/**
+	 * Sets the component to either render an SVG (slow) or use pre-calculated high resolution BufferedImages (less than ideal scaling).  This option
+	 * is set to false by default (BufferedImages)
+	 * @param useSVG The SVG flag
+	 */
+	public void setUseSVG(boolean useSVG){
+		this.useSVG = useSVG;
 	}
 }
